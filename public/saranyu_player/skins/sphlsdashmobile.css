@@ -1,0 +1,1341 @@
+/*
+ * Copyright (C) Saranyu Technologies - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Written by :  BHARATH S N <bharath@saranyu.in>, Year 2016
+ * Team Members : Harinandan , Bharath , Uday
+ * License: contact mkt@saranyu.in
+
+ * File Description : Saranyu HLS MSE Player CSS
+
+*/
+
+/*
+ *	CSS Architecture for Player
+
+		.sp-main-container-wrapper
+			|
+			|_ .sp-main-container
+				|
+				|_ .sp-player-inner
+					|
+					|_ .sp-ad-container (should contains ad-video-element , and its controls)
+					|
+					|_ .sp-media-element (should contain video element for HLS play-back)
+					|
+					|_ .sp-player-layers (should contain overlay layers like big play/pause and poster)
+					|
+					|_ .sp-full-controls (should contain all control elements)
+
+	sp = saranyu player
+*/
+
+
+
+/* Begin of CSS declarations  */
+.sp-main-container-wrapper{
+	position: relative;
+	height: 100% !important;
+	width: 100% !important;
+	box-sizing : border-box;
+}
+.sp-main-container{
+	height : inherit;
+	width : inherit;
+}
+.sp-player-inner{
+	width:100%;
+	height:100%;
+	position:relative;
+	background: black;
+}
+
+.sp-player-inner:focus {
+    outline-width: 0;
+}
+/*
+ media element is 100% height and we are hiding control bar display when not necessary
+ this is parent element and contain <video> element
+*/
+.sp-player-inner .sp-media-element{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%
+}
+.sp-player-inner .sp-media-element video{
+	object-fit : contain;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	margin: auto;
+}
+
+
+
+
+
+/*
+*	.sp-player-layers
+* layer for big playpause and prevention of right click on video player
+*/
+
+
+.sp-player-inner .sp-player-layers{
+    position: absolute;
+    width: inherit;
+    height: calc(100% - 40px - 15px - 30px);
+    top : 40px;
+}
+
+/*Poster  Start*/
+.sp-player-inner .sp-player-layers .sp-player-poster{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+.sp-player-inner .sp-player-layers .sp-player-poster img{
+    height: 100%;
+    width: 100%;
+}
+/*Poster  End*/
+
+/*Big Play Icon*/
+.sp-player-inner .sp-player-layers .sp-player-bigplay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url(image/bigplay.png) no-repeat center center;
+    cursor: pointer;
+}
+
+/*Loading Icon*/
+.sp-player-inner .sp-player-layers .sp-player-loading{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url(image/loading.gif) no-repeat center center;
+}
+
+
+/*Loading Icon*/
+.sp-player-inner .sp-player-layers .sp-player-replay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url(image/bigreplay.png) no-repeat center center;
+}
+
+/*Feeback Text Elements*/
+.sp-player-inner .sp-player-layers .sp-player-text-feedback-container{
+	position: absolute;
+    height: auto;
+    width: 25%;
+    background-color: black;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    color: white;
+    text-align: center;
+    display: inline;
+    top: 30%;
+    padding: 2%;
+    font-size: 1.2em;
+    border-radius: .5em;
+}
+
+
+/*
+	layer which have controls of player
+
+	.sp-full-controls
+		|
+		|_.sp-controls-top
+		|
+		|_.sp-controls-bottom
+				|
+				|_.sp-controls-bottom-progress-bar
+				|
+				|_.sp-controls-bottom-plyr-controls
+
+
+	.sp-controls-bottom-plyr-controls
+	|
+	|_play/pause , volume , fullscreen , quality control
+*/
+
+.sp-player-inner .sp-full-controls {
+	/*background-color: black;
+	opacity: 0.9;*/
+}
+
+.sp-player-inner .sp-full-controls.under-ads-active{
+	opacity: 1;
+}
+
+.sp-player-inner .sp-full-controls .sp-controls-top {
+	position: absolute;
+	padding: 0 8px;
+	top: 30px;
+	left: 1%;
+	height: 40px;
+	width: 95%;
+	background-color: inherit;
+}
+ .sp-controls-top .sp-controls-top-video-title{
+    position: relative;
+    height: inherit;
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+    color:white;
+    padding: 0.5em;
+    text-align: left;
+}
+
+.sp-controls-top .sp-controls-top-video-title .sp-controls-top-video-title-text{
+    position: absolute;
+  	top: 50%;
+  	transform: translate(0, -50%);
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	width: 80%;
+  	font-size: 0.9em;
+}
+
+.sp-player-inner .sp-full-controls .sp-controls-bottom{
+	position: absolute;
+	padding: 0;
+	bottom: 3%;
+	height: 40px;
+	width: 93%;
+	left: 2%;
+	background-color: inherit;
+}
+.sp-controls-top .sp-backarrow {	
+	float: left;
+}
+.sp-controls-top .sp-share, .sp-controls-top .sp-favourite, .sp-controls-top .sp-comment {	
+	float: right;
+}
+.sp-controls-top .sp-button button {
+    display: block;
+    position: relative;
+    height: 40px;
+    width: 30px;
+    margin: 0;
+    background-position: 0 0;
+    outline: none;
+    border: 0px !important;
+    cursor: pointer;   
+    padding: 0; 
+    margin: 0px 7px 0px 8px;
+}
+.sp-controls-top .sp-backarrow button {
+    background: url(image/icon_back3x.png) no-repeat; 
+    background-size: 45%;
+}
+.sp-controls-top .sp-share button {
+    background: url(image/icon_share3x.png) no-repeat; 
+    background-size: 82%;
+}
+.sp-controls-top .sp-favourite button {
+    background: url(image/icon_fav3x.png) no-repeat; 
+    background-size: 82%;
+}
+.sp-controls-top .sp-comment button {
+    background: url(image/icon_comment3x.png) no-repeat; 
+    background-size: 82%;
+}
+/*Progress bar Start*/
+.sp-player-inner .sp-full-controls .sp-controls-bottom .sp-controls-bottom-plyr-controls{
+		width: 100%;
+		height: 40px;
+		position: absolute;
+		box-sizing : border-box;
+		padding:0.1em 0.3em;
+}
+
+.sp-player-inner .sp-full-controls .sp-controls-bottom .sp-controls-bottom-progress-bar{
+		/*width: 100%;
+		height: 15px;
+		bottom: 40px;
+		position: absolute;
+		background-color: black;
+		cursor: pointer;*/
+		display: inline-block;
+    	position: relative;
+    	height: 8px;
+    	width: calc(100% - 125px);    	
+}
+
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail{
+	position: relative;
+	width: 100%;
+	height: 3px;
+	margin-top: -6px;
+}
+
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-buffering{
+	position: absolute;
+	width: 100%;
+	height: inherit;
+	background-color: #727272;
+}
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-loaded{
+	position: absolute;
+	width: 00%;
+	height: inherit;
+	background-color: #918e8e;
+}
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-cues{
+	height: inherit;
+}
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-cues .sp-ad-cue-points{
+    height: inherit;
+    width: 1px;
+    background-color: yellow;
+    position: absolute;
+}
+
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-current{
+	position: absolute;
+	width: 00%;
+	height: inherit;
+	background-color: #ffffff;
+}
+
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-handle{
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	top: -7px;
+	background: url(image/draghandle.png) no-repeat;
+    background-size: 100%;
+}
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-timefloat{
+    background: black;
+    width: 50px;
+    height: 20px;
+    color: white;
+    position: absolute;
+    top: -25px;
+    border-radius: 6px;
+    padding: 2px;
+    font-size: 0.8em;
+    box-sizing : border-box;
+    text-align: center;
+    display: none;
+}
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-seekbar-preview{
+	display: none;
+	height: auto;
+	width: auto;
+	bottom: 32px;
+	position: absolute;
+	background: black;
+	padding: 5px;
+}
+
+.sp-controls-bottom-progress-bar .sp-progress-bar-time-rail .sp-progress-bar-seekbar-preview .sp-progress-bar-seekbar-preview-img{
+	display: inherit;
+	object-fit: none;
+	/*height will be calculated from js*/
+	/*width will be calculated from js*/
+	/*left will be calculated from js*/
+  	/*
+  	    will be calculated from js
+  		object-position: 0 -234px;
+  	*/
+}
+/*Progress bar End*/
+
+.sp-controls-bottom-plyr-controls .sp-button{
+	position: relative;
+	width: 16px;
+	height: 20px;
+	display: inline-block;
+	padding:0 0.4em;
+	text-align: center;
+	clear: none;
+	opacity: inherit;
+	cursor: pointer;
+	margin-right: 15px;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button button{
+	display: block;
+	position: relative;
+	height: 30px;
+    width: 30px;
+   	padding: 0;
+    margin: 0;
+    border: 0;
+    background-position: 0 0;
+    outline: none;
+    border: 0px !important;
+    cursor: pointer;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button2{
+	position: relative;
+	/*width: 25px;
+	height: 20px;*/
+	/*width: 35px;
+	height: 42px;*/
+	display: inline-block;
+	padding:0 0.4em;
+	text-align: center;
+	clear: none;
+	opacity: inherit;
+	cursor: pointer;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button2 button{
+	display: block;
+	position: relative;
+	height: 20px;
+    width: 20px;
+   	padding: 0;
+    margin: 0;
+    border: 0;
+    background-position: 0 0;
+    outline: none;
+    border: 0px !important;
+    cursor: pointer;
+}
+
+.sp-button .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 7px 7px;
+    opacity: inherit;
+    font-size : 0.7em;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 0%;
+}
+
+.sp-button:hover .tooltiptext {
+    visibility: visible;
+}
+
+/* Play Pause Start */
+
+/*play icon*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-play-pause.sp-play .sp-play-pause-btn{
+	background: url(image/pause3x.png) no-repeat; 
+	background-size: 69%;
+}
+
+/*pause icon*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-play-pause.sp-pause .sp-play-pause-btn{
+	background: url(image/play3x.png) no-repeat; 
+	background-size: 69%;
+}
+
+/*replay icon Start*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-play-pause.sp-replay .sp-play-pause-btn{
+	background: url(image/pause3x.png) no-repeat; 
+	background-size: 69%;
+}
+/*Play Pause End */
+
+
+
+
+/*volume Start */
+/*volume buttons start*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-volume-btn-wrap .sp-volume-btn{
+    background: url(image/player-mute-toggle-default.png) no-repeat center center;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button.sp-volume-btn-wrap.sp-mute .sp-volume-btn{
+    /*background: url(image/player-mute-toggle-none.png) no-repeat center center;*/
+    display: none;
+}
+/*volume buttons end*/
+/*volume slider start*/
+.sp-controls-bottom-plyr-controls .sp-volume-slider.sp-volume-slider-wrap{
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    background-color: #918e8e;
+    box-sizing: border-box;
+    height: 5px;
+    top: -12px;
+    cursor: pointer;
+}
+
+.sp-volume-slider .sp-volume-current{
+	position : absolute;
+	background-color: #DE6A24;
+	height: inherit;
+	width: 100%;
+}
+
+.sp-volume-slider .sp-volume-handle{
+	position : absolute;
+	background-color: white;
+	border-radius:100%;
+	height: 12px;
+	width: 12px;
+	top: -4px;
+	left: calc(100% - 6px);
+}
+
+.sp-volume-slider .sp-volume-handle .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 7px 7px;
+    opacity: inherit;
+    font-size : 0.7em;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: -50%;
+}
+
+.sp-volume-slider .sp-volume-handle:hover .tooltiptext {
+    visibility: visible;
+}
+/*volume slide end*/
+/*volume End */
+
+/*player time Start*/
+.sp-controls-bottom-plyr-controls .sp-player-time{
+	position: absolute;
+    display: inline;
+    color: white;
+    text-align: center;
+    margin: 0 2%;
+    font-size: 0.8em;
+	font-weight: 700;
+    top: -12px;
+}
+.sp-player-time .sp-plyr-currenttime{
+
+}
+.sp-player-time .sp-plyr-duration{
+
+}
+/*player time End*/
+
+
+/* full-screen / unfull-screen Start */
+
+.sp-is-fullscreen{
+
+}
+
+/*The tooltip was going out of player window under fullscreen mode*/
+.sp-fullscreen-unfullscreen .tooltiptext{
+	left : -50%;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button.sp-fullscreen-unfullscreen{
+	float: right;
+	margin-right: 0px;
+}
+
+		/*fullscreen*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-fullscreen-unfullscreen.sp-fullscreen .sp-fullscreen-btn{
+    margin-top: 2px;
+    background: url(image/fullscreen3x.png) no-repeat;
+	background-size: 95%;
+}
+/*.sp-controls-bottom-plyr-controls .sp-button.sp-fullscreen-unfullscreen.sp-fullscreen .sp-fullscreen-btn:hover{
+    background: url(image/player-fullscreen.png) no-repeat center center;
+}*/
+
+		/*un-fullscreen*/
+.sp-controls-bottom-plyr-controls .sp-button.sp-fullscreen-unfullscreen.sp-unfullscreen .sp-fullscreen-btn{
+    margin-top: 2px;
+    background: url(image/exit_fullscreen.png) no-repeat;
+	background-size: 95%;
+}
+/*.sp-controls-bottom-plyr-controls .sp-button.sp-fullscreen-unfullscreen.sp-unfullscreen .sp-fullscreen-btn:hover{
+    background: url(image/player-exit-fullscreen.png) no-repeat center center;
+}*/
+/* full-screen / unfull-screen End */
+
+/* close button*/
+
+.sp-controls-bottom-plyr-controls .sp-close-button{
+	float: right;
+}
+
+
+.sp-controls-bottom-plyr-controls .sp-close-button .sp-close-btn{
+    background: url(image/close1.png) no-repeat;
+	background-size: 20px;
+	width:20px;
+	height: 20px;
+	left: calc(100% - 10px);
+	border:0px;
+}
+
+/* close button*/
+
+/* Playlist Start */
+.sp-controls-bottom-plyr-controls .sp-button.sp-playlist-button-wrap{
+	float: right;
+}
+.sp-controls-bottom-plyr-controls .sp-button.sp-playlist-button-wrap .sp-playlist-btn{
+	height : 20px;
+	width  : 30px;
+	display: none;
+}
+.sp-controls-bottom-plyr-controls .sp-button.sp-playlist-button-wrap.sp-playlist-inactive:hover .sp-playlist-btn{
+	background: url(image/controls.png) -98px -158px;
+}
+.sp-controls-bottom-plyr-controls .sp-button.sp-playlist-button-wrap.sp-playlist-inactive .sp-playlist-btn{
+	background: url(image/controls.png) -33px -158px;
+}
+
+.sp-controls-bottom-plyr-controls .sp-button.sp-playlist-button-wrap.sp-playlist-active .sp-playlist-btn{
+	background: url(image/controls.png) -98px -158px;
+}
+.sp-player-inner .sp-playlist-panel{
+	height: 120px;
+	bottom: 50px;
+	position: absolute;
+	width: 100%;
+	background-color: black;
+	border-radius: 6px;
+	display: none;
+}
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-left-btn{
+	background: url("image/controls.png") -255px -244px;
+	width: 30px;
+	height: 25px;
+	position: absolute;
+	top: calc(50% - 12.5px);
+}
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-left-btn:hover{
+background : url("image/controls.png") -215px -244px;
+}
+
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-right-btn{
+	background: url("image/controls.png") -275px -291px;
+	width: 30px;
+	height: 25px;
+	position: absolute;
+	top: calc(50% - 12.5px);
+	left : calc(100% - 30px)
+}
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-right-btn:hover{
+	background : url("image/controls.png") -235px -291px;
+}
+
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview{
+	position: absolute;
+	left: 5%;
+	width: 90%;
+	height: inherit;
+	background-color: black;
+	overflow: hidden;
+}
+
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview .item{
+  padding: 3px;
+  border: none;
+  box-sizing : border-box;
+  height: 100%;
+}
+
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview .item.sp-playlist-active-item{
+  padding: 3px;
+  border: 3px solid blue;
+  box-sizing : border-box;
+}
+
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview .sp-playlist-item .sp-playlist-item-img{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview .sp-playlist-item .sp-playlist-item-videotitle{
+ 	position: absolute;
+    bottom: 3px;
+    font-size: 0.9em;
+    background: black;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+    width: inherit;
+    box-sizing: border-box;
+    width: 90%;
+    left: 5%;
+    display: none;
+}
+.sp-player-inner .sp-playlist-panel .sp-playlist-panel-itemview .sp-playlist-item:hover .sp-playlist-item-videotitle{
+	display: inline;
+}
+/* Playlist End */
+
+/* Subtitles Switching Start */
+
+.sp-player-inner .sp-media-element .sp-subtitles-panel{
+	opacity: 0.8;
+	display: inline;
+	position: absolute;
+	font-size: 1.5em;
+	color: white;
+	width: 50%;
+	background-color: black;
+	left: 25%;
+	text-align: center;
+	bottom: 52px;
+	word-wrap: break-word;
+	box-sizing: border-box;
+	padding: 0.2em;
+	border-radius: 6px;
+	display: none;
+}
+
+.sp-controls-bottom-plyr-controls .sp-subtitles-switch.sp-subtitles-switch-wrap{
+	position : relative;
+	display : inline-block;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	float: right;
+	color: white;
+}
+.sp-subtitles-switch .sp-subtitles-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	padding: 0 !important;
+	font-size: 0.7em;
+	cursor: pointer;
+	display: none;
+}
+.sp-subtitles-switch .sp-subtitles-switch-btn:hover{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: #39f;
+	padding: 0 !important;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap{
+    position: absolute;
+    bottom: 200%;
+    background-color: black;
+    width: 100px;
+    padding: 5px;
+    box-sizing : border-box;
+    left: -35%;
+    display: none;
+    cursor: pointer;
+    border-radius: 6%;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap div{
+	margin: 5px; cursor: pointer;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap div button{
+	background-color: black;
+	color: white;
+	border: 0px;
+	outline: none;
+	cursor: pointer;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap div button:hover{
+	color: #39f;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap .active{
+	color: #39f;
+}
+.sp-subtitles-switch-wrap .sp-subtitles-switch-popup-wrap .inactive{
+	color: white;
+}
+/* Subtitles Switching End */
+
+
+/* Quality Switching Start */
+.sp-controls-bottom-plyr-controls .sp-quality-switch.sp-quality-switch-wrap{
+	position : relative;
+	display : inline-block;
+	/*height: 30px;
+	width: 100px;*/
+	text-align: center;
+	float: right;
+	color: white;
+}
+.sp-quality-switch .sp-quality-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	padding: 0 !important;
+	font-size: 0.7em;
+	cursor: pointer;
+	margin-top: 2px;
+	background: url(image/settings3x.png) no-repeat;
+	background-size: 95%;
+}
+
+/*.sp-quality-switch .sp-quality-switch-btn:hover{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: #39f;
+	padding: 0 !important;
+	background: url(image/settings3x.png) no-repeat;
+}*/
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap{
+    position: absolute;
+    bottom: 120%;
+    background-color: black;
+    width: 100px;
+    padding: 5px;
+    box-sizing : border-box;
+    left: -5%;
+    display: none;
+    cursor: pointer;
+    border-radius: 6%;
+}
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap div{
+	margin: 0px; cursor: pointer;
+}
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap div button{
+	background-color: black;
+	color: white;
+	border: 0px;
+	outline: none;
+	cursor: pointer;
+}
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap div button:hover{
+	color: #39f;
+}
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap .active{
+	color: #39f;
+	height: 25px;
+}
+.sp-quality-switch-wrap .sp-quality-switch-popup-wrap .inactive{
+	color: white;
+	height: 25px;
+}
+/* Quality Switching End */
+
+
+/*  Multi Audio Switching Start */
+.sp-controls-bottom-plyr-controls .sp-multiaudio-switch.sp-multiaudio-switch-wrap{
+	position : relative;
+	display : inline-block;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	float: right;
+	color: white;
+}
+.sp-multiaudio-switch .sp-multiaudio-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	padding: 0 !important;
+	font-size: 0.7em;
+	cursor: pointer;
+	display: none;
+}
+.sp-multiaudio-switch .sp-multiaudio-switch-btn:hover{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: #39f;
+	padding: 0 !important;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap{
+    position: absolute;
+    bottom: 200%;
+    background-color: black;
+    width: 100px;
+    padding: 5px;
+    box-sizing : border-box;
+    left: -35%;
+    display: none;
+    cursor: pointer;
+    border-radius: 6%;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap div{
+	margin: 5px; cursor: pointer;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap div button{
+	background-color: black;
+	color: white;
+	border: 0px;
+	outline: none;
+	cursor: pointer;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap div button:hover{
+	color: #39f;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap .active{
+	color: #39f;
+}
+.sp-multiaudio-switch-wrap .sp-multiaudio-switch-popup-wrap .inactive{
+	color: white;
+}
+/* Multi Audio Switching End */
+
+/* Logo Display  */
+.sp-controls-bottom-plyr-controls .sp-logo-switch.sp-logo-switch-wrap{
+	position : relative;
+	display : inline-block;
+	height: 30px;
+	width: 100px;
+	text-align: center;
+	float: right;
+	color: white;
+	left: -2%;
+    top: 25%;
+}
+.sp-logo-switch .sp-logo-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	padding: 0 !important;
+	font-size: 0.7em;
+	cursor: pointer;
+	background: url(image/logo1.png) no-repeat;
+}
+
+/*NX playback Switch Start*/
+.sp-controls-bottom-plyr-controls .sp-nxplayback-switch.sp-nxplayback-switch-wrap{
+	position : relative;
+	display : inline-block;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	float: right;
+	color: white;
+}
+.sp-nxplayback-switch .sp-nxplayback-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	font-size: 0.7em;
+	padding: 0 !important;
+	cursor: pointer;
+}
+.sp-nxplayback-switch .sp-nxplayback-switch-btn:hover{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: #39f;
+	padding: 0 !important;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap{
+    position: absolute;
+    bottom: 200%;
+    background-color: black;
+    width: 100px;
+    padding: 5px;
+    box-sizing : border-box;
+    left: -35%;
+    display: none;
+    cursor: pointer;
+    border-radius: 6%;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap div{
+	margin: 5px; cursor: pointer;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap div button{
+	background-color: black;
+	color: white;
+	border: 0px;
+	outline: none;
+	cursor: pointer;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap div button:hover{
+	color: #39f;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap .active{
+	color: #39f;
+}
+.sp-nxplayback-switch-wrap .sp-nxplayback-switch-popup-wrap .inactive{
+	color: white;
+}
+/*NX playback Switch End*/
+
+/*Closed Caption Switch Start*/
+/*
+.sp-controls-bottom-plyr-controls .sp-closedcaptions-switch.sp-closedcaptions-switch-wrap{
+	position : relative;
+	display : inline-block;
+	height: 20px;
+	width: 60px;
+	text-align: center;
+	float: right;
+	color: white;
+}
+*/
+/*
+.sp-closedcaptions-switch .sp-closedcaptions-switch-btn{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: inherit;
+	padding: 0 !important;
+}
+*/
+/*
+.sp-closedcaptions-switch .sp-closedcaptions-switch-btn:hover{
+	height: inherit;
+	width: inherit;
+	background: inherit;
+	border: 0px;
+	outline: none;
+	color: #39f;
+	padding: 0 !important;
+}
+*/
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap{
+    position: absolute;
+    bottom: 200%;
+    background-color: black;
+    width: 100px;
+    padding: 5px;
+    box-sizing : border-box;
+    left: -35%;
+    display: none;
+    cursor: pointer;
+}
+*/
+
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap div{
+	margin: 5px; cursor: pointer;
+}
+*/
+
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap div button{
+	background-color: black;
+	color: white;
+	border: 0px;
+	outline: none;
+	cursor: pointer;
+}
+*/
+
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap div button:hover{
+	color: #39f;
+}
+*/
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap .active{
+	color: #39f;
+}
+*/
+/*
+.sp-closedcaptions-switch-wrap .sp-closedcaptions-switch-popup-wrap .inactive{
+	color: white;
+}
+*/
+/*Closed Caption Switch End*/
+
+/* Ads related */
+/*Start*/
+
+/*
+	.sp-player-inner .sp-ad-container = main ad container
+	this will contain overlay player with controls , video title and ad video player.
+
+	.sp-ad-container
+		|
+		|--- .sp-ad-top-controlbar // ad title.
+		|
+		|--- .sp-ad-video-element // given to google ima sdk.
+		|
+		|--- .sp-ad-bottom-controlbar // ad playpause , volume , time and fullscreen.
+
+*/
+
+.sp-player-inner .sp-ad-container{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -10;/*should be made -ve*/
+    display: none;/*should be made none*/
+    background-color: black;
+    overflow: hidden;
+}
+
+
+.sp-player-inner .sp-ad-container.sp-ad-container-display{
+    display: block !important;
+}
+
+.sp-player-inner .sp-ad-container.sp-ad-active{
+	z-index: 10;
+	display: block;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-dummy-video{
+    position: absolute;
+    top: 30px;
+    height : calc(100% - 60px);
+    width: 100%;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-top-controlbar{
+	position: relative;
+    height: 30px;
+    width: 100%;
+    background-color: black;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar{
+	position: relative;
+    height: 30px;
+    width: 100%;
+    background-color: black;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-video-element{
+	position: relative;
+    width: 100%;
+    height : calc(100% - 60px);
+}
+/*if banner then hide controls , dummy video element , just show banner portion*/
+.sp-player-inner .sp-ad-container.sp-ad-banner{
+	height: 100px;
+	z-index: 10;
+	bottom: 50px;
+	background-color: transparent;
+	display: block;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner.sp-playlist-show{
+	bottom : 170px;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner .sp-ad-video-element{
+	height : inherit;
+	background-color: black;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner .sp-ad-video-element .sp-ad-banner-closebtn{
+    color: white;
+    position: absolute;
+    background-color: black;
+    right: 0;
+    cursor: pointer;
+    font-size: 1em;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding: 0.2em;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner .sp-ad-bottom-controlbar{
+	display: none;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner .sp-ad-top-controlbar{
+	display: none;
+}
+.sp-player-inner .sp-ad-container.sp-ad-banner .sp-ad-dummy-video{
+	display: none;
+}
+/*if banner then ends*/
+
+
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button{
+	position: relative;
+	width: 25px;
+	height: 20px;
+	display: inline-block;
+	padding:0 0.4em;
+	text-align: center;
+	clear: none;
+	opacity: inherit;
+	cursor: pointer;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button button{
+	display: block;
+	position: relative;
+	height: 20px;
+    width: 20px;
+   	padding: 0;
+    margin: 0;
+    border: 0;
+    background-position: 0 0;
+    outline: none;
+    border: 0px !important;
+    cursor: pointer;
+}
+
+/*ad play pause btn start*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-playpause{
+	float: left;
+}
+/*play icon*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-playpause.sp-ad-play button{
+	background: url(image/controls.png) -35px -45px ;
+}
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-playpause.sp-ad-play:hover button{
+	background: url(image/controls.png) -102px -45px ;
+}
+
+/*pause icon*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-playpause.sp-ad-pause button{
+	background: url("image/controls.png") -35px -100px;
+}
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-playpause.sp-ad-pause:hover button{
+	background: url(image/controls.png) -101px -100px;
+}
+/*ad play pause btn stop*/
+
+
+/*ad fullscreen begin*/
+		/*fullscreen*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-fullscreen-unfullscreen{
+	float: right;
+}
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-fullscreen-unfullscreen.sp-ad-fullscreen button{
+    background: url(image/controls.png) -39px -263px;
+    /*background: url(image/controls.png) -452px -112px;*/
+}
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-fullscreen-unfullscreen.sp-ad-fullscreen:hover button{
+   background: url(image/controls.png) -104px -263px;
+     /*background: url(image/controls.png) -531px -112px;*/
+}
+
+		/*un-fullscreen*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-fullscreen-unfullscreen.sp-ad-unfullscreen button{
+    background: url(image/controls.png) -39px -210px;
+   /* background: url(image/controls.png) -452px -112px;*/
+}
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-button.sp-ad-fullscreen-unfullscreen.sp-ad-unfullscreen:hover button{
+    background: url(image/controls.png) -105px -210px;
+   /* background: url(image/controls.png) -531px -112px;*/
+}
+/*ad fullscreen end*/
+
+/*ad mute and unmute start*/
+.sp-player-inner .sp-ad-container .sp-ad-button.sp-ad-volume-muteunmute{
+	float: left;
+}
+.sp-player-inner .sp-ad-container .sp-ad-button.sp-ad-volume-muteunmute.sp-ad-unmute button{
+	background: url(image/controls.png) -450px -295px;
+}
+.sp-player-inner .sp-ad-container .sp-ad-button.sp-ad-volume-muteunmute.sp-ad-mute button{
+    background: url(image/controls.png) -318px -294px;
+}
+/*ad mute and unmute start*/
+/*volume slider start*/
+.sp-ad-bottom-controlbar .sp-ad-volume-slider.sp-ad-volume-slider-wrap{
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    background-color: #918e8e;
+    box-sizing: border-box;
+    height: 5px;
+    cursor: pointer;
+}
+
+.sp-ad-volume-slider .sp-ad-volume-current{
+	position : absolute;
+	background-color: #39f;
+	height: inherit;
+	width: 100%;
+}
+
+.sp-ad-volume-slider .sp-ad-volume-handle{
+	position : absolute;
+	background-color: white;
+	border-radius:100%;
+	height: 12px;
+	width: 12px;
+	top: -4px;
+	left: calc(100% - 6px);
+}
+/*volume slide end*/
+
+/*Ad Time Start*/
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-player-time{
+	position: relative;
+    display: inline;
+    color: white;
+    text-align: center;
+    margin: 0 2%;
+    font-size: 0.8em;
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-player-time .sp-ad-plyr-currenttime{
+
+}
+
+.sp-player-inner .sp-ad-container .sp-ad-bottom-controlbar .sp-ad-player-time .sp-ad-plyr-duration{
+
+}
+/*Ad Time End*/
+
+
+/*Ad title start*/
+.sp-player-inner .sp-ad-container .sp-ad-top-controlbar .ad-video-title{
+	position: relative;
+    height: inherit;
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+    color:white;
+    padding: 0.5em;
+    text-align: left;
+}
+.sp-player-inner .sp-ad-container .sp-ad-top-controlbar .ad-video-title .ad-video-title-text{
+	position: absolute;
+  	top: 50%;
+  	transform: translate(0, -50%);
+  	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	width: 80%;
+  	font-size: 0.9em;
+}
+/*Ad title end*/
+
+/* Ads related Stop*/

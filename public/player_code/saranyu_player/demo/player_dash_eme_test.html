@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72765259-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="../external/jquery-1.11.3.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+}
+#video_player{
+	height: 480px;
+	width: 720px;
+	background-color: black;
+	margin: 0 auto;
+}
+
+</style>
+</head>
+<body>
+
+	<div class="container">
+	    <div class="form-group">
+	      <label for="usr">Dash URL:</label>
+	      <input type="text" class="form-control" id="dashurl">
+	    </div>
+	    <div class="form-group">
+	      <label for="pwd">LA URL:</label>
+	      <input type="text" class="form-control" id="laurl">
+	    </div>
+	    	<button type="button" id="start_player" class="btn btn-primary">Start Player</button>
+			<button type="button" id="reload" class="btn btn-success">Reload</button>
+			<br><br>
+
+				<div id="video_player">
+				</div>
+	</div>
+</body>
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="mpd";
+
+var playerObject;
+
+
+$("#reload").click(function(){
+	window.location.reload()
+});
+
+$("#start_player").click(function(){
+
+	var dashurl = $("#dashurl").val().trim();
+	var laurl = $("#laurl").val().trim();
+
+	if(dashurl == "" || laurl == ""){
+		alert("please enter valid urls");
+		return false;
+	}
+
+	$(this).hide();
+	$("#dashurl").attr("disabled",true)
+	$("#laurl").attr("disabled",true)
+
+
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+			    'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+				'type' : 'video',
+				'content' : 'vod',
+				'file' :  [
+				            	{
+									//'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',                  
+									//'content_url' : 'https://dp0hcecjzzksa.cloudfront.net/encoded/temp/test5/stream.mpd',
+									'content_url' : dashurl,
+		      						'label' : 'Auto',
+		      						'mediaid' : '123',
+		      						'poster' : '../demo/images/elephants-dream.jpg',
+		      						'videotitle' : 'Dash DRM Test',
+		      						'thumbnails' : './thumbnails/elephandream_thumbnails.vtt',
+		      						'encryption': 'true',
+		      						'la_url' : laurl
+		      						//'la_url' : 'https://widevine-dash.ezdrm.com/proxy?pX=B0CBED',
+							      },
+						  ],
+				'autoplay':'true',
+				'mute' : 'false',
+				'poster' : '../demo/saranyuimage.png',					  
+				'hideControlsWhenInactive':'true',
+				'qualityswitch' : {'label' : 'Auto', 'metric' : 'bitrate'}, // metric can be resolution or bitrate.
+				'features' : ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons'],
+	});
+});
+
+</script>
+</html>

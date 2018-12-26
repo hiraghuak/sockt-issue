@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+Template Name: Hoppler
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+-->
+<html lang="">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+<title>Player Demonstration</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<script src="player/external/jquery-1.11.3.min.js"></script>
+<script src="ads_player/plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+<style type="text/css">
+  .sp-controls-top{
+    opacity: 0;
+  }
+  @font-face {
+      font-family: nexabold;
+      src: url(nexa/nexabold.otf);
+  }
+  @font-face {
+      font-family: nexalight;
+      src: url(nexa/nextlight.otf);
+  }  
+  #header{
+    background-color: #091628; 
+  }
+  #logo{
+    margin: 0.5em !important;
+  }
+  #logo img{
+
+    height: 60px;
+    width: 60px;
+  }
+  .one_third{
+    cursor: pointer;
+  }
+  .navbarz{
+    float: right;
+  }
+  .navbarz ul{
+    list-style: none;
+    font-size: 2em;
+  }
+  .navbarz ul li{
+    display: inline;
+    margin: 0.3em;
+    border-radius: 12px;
+    background-color: #3b4865;
+    text-align: center;
+    padding: 0.2em 0.3em ;
+    cursor: pointer;
+  }  
+  .navbarz ul li:hover{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li.active{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li a{
+    cursor: pointer;
+    font-family: nexalight;
+  } 
+  .navbarz ul li a.active{
+    /*font-family: nexabold;*/
+  }    
+  .logo-title{
+    padding: 0.5em;
+    font-size: 2em;
+    font-family: nexabold;    
+  }
+  .logo-title2{
+    font-family: nexalight;    
+  }
+  .heading{
+    font-family: nexabold;    
+  }
+  .sub-heading{
+    font-family: nexalight;
+  }
+  body{
+    background-color: #091628;
+    color: white;
+  }
+  #video_player{
+    height: 480px;
+    width: 840px;
+    background-color: black;
+    margin: 0 auto;
+  }
+  .overlay::after{
+    color:inherit;background-color:rgba(0,0,0,.0);
+  }
+  .back-btn{
+    background-color: #3b4865;
+    border: none;
+    right:0;
+    width: auto;
+    height: auto;
+    color: white;
+    position: fixed;
+    margin: 1em 0px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    padding: 0.5em;
+    font-family: nextlight;
+    cursor: pointer !important;
+  }
+  .back-btn:hover{
+    background-color: slategray;
+  }
+  .footer{
+    background-color: #091628;
+    text-align: center;
+    font-family: nextbold;
+  }
+  .footer a{
+    background-color: #091628;
+  }
+  .bgded.overlay{
+    background-color: #FFFFFF;
+  }  
+</style>
+</head>
+<body id="top">
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Top Background Image Wrapper -->
+<div class="bgded overlay" >
+  <!-- ################################################################################################ -->
+  <div class="wrapper row1">
+    <header id="header" class="clear">
+      <!-- ################################################################################################ -->
+      <div id="logo" class="fl_left">
+        <img src="1.png">
+        <span class="logo-title">INSTA<span class="logo-title2">PLAY</span></span>
+      </div>
+      <!-- ################################################################################################ -->
+      <div class="navbarz">
+          <ul>
+            <li class="active">
+              <a class="active">Web Player</a>
+            </li>
+            <li>
+              <a href="index_android.html">Android Player</a>
+            </li>
+            <li>
+              <a href="index_ios.html">IOS Player</a>
+            </li>                      
+          </ul>
+      </div>
+    </header>
+  </div>
+  <!-- ################################################################################################ -->
+
+          <a href="index.html"><button class="back-btn"> Home page</button></a>
+
+          <h2 style="color: white;text-align: center;"> Player Demonstration </h2>
+
+          <div id="video_player">
+          </div>
+
+          <div style="margin: 0 25% 0 25%;color: black;font-family: nexalight;">
+            <br><br>
+            <h4> Player shows following features </h4>
+            <p> * Vast AD Url </p>
+            <p>Preroll (video ad)</p>
+            <p>Mid roll ad - 150th second (banner ad)</p>
+            <p>Mid roll ad - 300th second (video ad)</p>
+            <p>Postroll (video ad)</p>
+            <br>
+            <p> We support VMAP ad urls too</p>
+            <br><br>
+        </div>
+  <script type="text/javascript">
+          var prePendUrlz = window.location.href.split('/index_')[0];
+
+          playerObject = new saranyuplayer('hls','#video_player',{
+              'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+            'type' : 'video',
+            'content' : 'vod',
+            'file' :  [
+                        {
+                          'content_url' : prePendUrlz+'/videofiles/multiaudio/playlist.m3u8',
+                          'label' : 'Auto',
+                          'mediaid' : '123',
+                          'poster' : prePendUrlz+'/player/demo/images/fullscreen_thumbnail.png',
+                          'videotitle' : 'Elephants Dream',
+                       },
+                    ],
+            'mute':'false',
+            'advertisement' : {
+            'cues' : 'true',
+            'adsets' : [
+                  {
+                  'adurl' : 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=',
+                  'schedule' : 'preroll'
+                  },
+                  {
+                  'adurl' : 'http://pubads.g.doubleclick.net/gampad/ads?sz=400x300&iu=%2F6062%2Fiab_vast_samples&ciu_szs=300x250%2C728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]&cust_params=iab_vast_samples%3Dimageoverlay',
+                  'schedule' : '150'
+                  },
+                  {
+                  'adurl' : 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=',
+                  'schedule' : '300'
+                  },
+                  {
+                  'adurl' : 'http://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]',
+                  'schedule' : 'postroll' //in seconds
+                  }
+                   ]
+                },
+            'hideControlsWhenInactive':'true',
+            'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+            'features' : ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','advertisement'],
+          });
+
+  </script>
+</div>
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row5 footer">
+  <div id="copyright" class="hoc clear">
+    <!-- ################################################################################################ -->
+    <p class="fl_center">Copyright &copy; 2018 - All Rights Reserved <a href="http://www.saranyu.in"><img src='logo.png'></a> </p>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+<script type="text/javascript">
+    $("article").click(function(){
+      
+    var navigate_to = $(this).find('a').attr('custom_href');
+    if(navigate_to === "index_vr.html" && mobileAndTabletcheck() === true){
+      console.log(navigate_to);
+      window.location.href = "index_vr_mobile.html";
+      return;
+    }
+    console.log(navigate_to);
+    window.location.href = navigate_to;
+  });
+</script>
+</body>
+</html>

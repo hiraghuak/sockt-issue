@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!--
+Template Name: Hoppler
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+-->
+<html lang="">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+<title>Video Protocols</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<script src="player/external/jquery-1.11.3.min.js"></script>
+<script src="player/plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style type="text/css">
+  .sp-controls-top{
+    opacity: 0;
+  }
+  @font-face {
+      font-family: nexabold;
+      src: url(nexa/nexabold.otf);
+  }
+  @font-face {
+      font-family: nexalight;
+      src: url(nexa/nextlight.otf);
+  }  
+  #header{
+    background-color: #091628; 
+  }
+  #logo{
+    margin: 0.5em !important;
+  }
+  #logo img{
+
+    height: 60px;
+    width: 60px;
+  }
+  .one_third{
+    cursor: pointer;
+  }
+  .navbarz{
+    float: right;
+  }
+  .navbarz ul{
+    list-style: none;
+    font-size: 2em;
+  }
+  .navbarz ul li{
+    display: inline;
+    margin: 0.3em;
+    border-radius: 12px;
+    background-color: #3b4865;
+    text-align: center;
+    padding: 0.2em 0.3em ;
+    cursor: pointer;
+  }  
+  .navbarz ul li:hover{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li.active{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li a{
+    cursor: pointer;
+    font-family: nexalight;
+  } 
+  .navbarz ul li a.active{
+    /*font-family: nexabold;*/
+  }    
+  .logo-title{
+    padding: 0.5em;
+    font-size: 2em;
+    font-family: nexabold;    
+  }
+  .logo-title2{
+    font-family: nexalight;    
+  }
+  .heading{
+    font-family: nexabold;    
+  }
+  .sub-heading{
+    font-family: nexalight;
+  }
+  body{
+    background-color: #091628;
+    color: white;
+  }
+  #video_player{
+    height: 480px;
+    width: 840px;
+    background-color: black;
+    margin: 0 auto;
+  }
+  .overlay::after{
+    color:inherit;background-color:rgba(0,0,0,.0);
+  }
+  .back-btn{
+    background-color: #3b4865;
+    border: none;
+    right:0;
+    width: auto;
+    height: auto;
+    color: white;
+    position: fixed;
+    margin: 1em 0px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    padding: 0.5em;
+    font-family: nextlight;
+    cursor: pointer !important;
+  }
+  .back-btn:hover{
+    background-color: slategray;
+  }
+  .footer{
+    background-color: #091628;
+    text-align: center;
+    font-family: nextbold;
+  }
+  .footer a{
+    background-color: #091628;
+  }
+</style>
+</head>
+<body id="top">
+<!-- Top Background Image Wrapper -->
+<div class="bgded overlay" >
+  <!-- ################################################################################################ -->
+  <div class="wrapper row1">
+    <header id="header" class="clear">
+      <!-- ################################################################################################ -->
+      <div id="logo" class="fl_left">
+        <img src="1.png">
+        <span class="logo-title">INSTA<span class="logo-title2">PLAY</span></span>
+      </div>
+      <!-- ################################################################################################ -->
+      <div class="navbarz">
+          <ul>
+            <li class="active">
+              <a class="active">Web Player</a>
+            </li>
+            <li>
+              <a href="index_android.html">Android Player</a>
+            </li>
+            <li>
+              <a href="index_ios.html">IOS Player</a>
+            </li>                      
+          </ul>
+      </div>
+    </header>
+  </div>
+  <!-- ################################################################################################ -->
+          <a href="index.html"><button class="back-btn" style="cursor: pointer !important;z-index: 100;"> Home </button></a>
+
+          <div class="wrapper row3">
+          <main class="hoc container clear">
+            <!-- main body -->
+            <!-- ################################################################################################ -->
+            <ul class="nospace group services" style="text-align: center;">
+              <li class="one_third" style="width: 100% !important;">
+                <article><a><i class="fa fa-4x fa-address-card"></i></a>
+                  <h6 class="heading font-x1" style="font-family: nexabold;">Contact Us</h6>
+                  <p style="font-family: nexalight;">
+                        Bangalore Office (Headquarters)
+                        <br>
+                        AJ Tower, 2nd Floor, No. 40/509
+                        <br>
+                        8th Cross, 7th Block, Jayanagar, West of Kanakapura Main Road
+                        <br>
+                        Bangalore - 560082, Karnataka, INDIA
+                        <br>
+                        <i class="fa fa-2x fa-phone-square"></i> +91 80 4123 4020
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fa fa-2x fa-phone-square"></i> +91 98451 68021
+                        <br>
+                        <i class="fa fa-2x fa-envelope"></i>  mkt@saranyu.in 
+                        <br>
+                        <iframe height="300px" width="600px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Saranyu+Technologies+Pvt+Ltd,+Bangalore,+Karnataka,+India&amp;aq=0&amp;oq=saranyu+t&amp;sll=37.0625,-95.677068&amp;sspn=41.767874,79.013672&amp;ie=UTF8&amp;hq=Saranyu+Technologies+Pvt+Ltd,&amp;hnear=Bangalore,+Bangalore+Urban,+Karnataka,+India&amp;ll=12.963063,77.591173&amp;spn=0.018779,0.007457&amp;t=m&amp;output=embed"></iframe>
+                  </p>
+                </article>
+              </li>
+            </ul>
+            <!-- ################################################################################################ -->
+            <!-- / main body -->
+            <div class="clear"></div>
+          </main>
+        </div>
+</div>
+
+<div class="wrapper row5 footer">
+  <div id="copyright" class="hoc clear">
+    <!-- ################################################################################################ -->
+    <p class="fl_center">Copyright &copy; 2018 - All Rights Reserved <a href="http://www.saranyu.in"><img src='logo.png'></a> </p>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+</body>
+
+<script type="text/javascript">
+
+  // $("article").click(function(){
+  //   var navigate_to = $(this).find('a').attr('custom_href');
+  //   console.log(navigate_to);
+  //   window.location.href = navigate_to;
+  // });
+
+</script>
+</html>

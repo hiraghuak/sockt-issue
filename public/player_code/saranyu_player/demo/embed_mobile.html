@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<script src="../external/jquery-1.11.3.min.js"></script>
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<style>
+		body {
+			background: #eee;
+			margin:0px;
+			padding: 0px;
+		}
+		#video_player{
+			height: 100%;
+			width: 100%;
+			position: absolute;
+		}
+</style>
+</head>
+<body style="background-color: rgb(38,38,38); height: 100%; width: 100%; overflow: hidden;">
+
+	<div id="video_player">
+	</div>
+
+	<script type="text/javascript" charset="utf-8">
+
+		var player_status = false;
+		function convert_seconds_hh_mm_ss(sec){
+			var hours = Math.floor(sec / 3600);
+			var min = Math.floor((sec - (hours*3600)) / 60);
+			var seconds = Math.floor(sec % 60);
+			return hours +":"+ min + ":"+ seconds
+		}
+
+		function convert_hr_mm_ss_to_second(val){
+			var sec = 0
+			tt = val.split(":");
+			sec = tt[0]*3600+tt[1]*60+tt[2]*1;
+			return sec;
+		}
+
+		window.onload = function() {
+		var contenturl = location.href;
+		var res = contenturl.split("contenturl=");
+		var play_url = res[1].split("|")[0];
+		play_url = play_url.replace("http://", "https://");
+    console.log(play_url)
+    var dash_url = play_url;//res[1].split("dash_url=")[1].split("|")[0];
+		console.log(dash_url);
+
+		function IsSafari() {
+		 var is_safari = navigator.userAgent.toLowerCase().indexOf('safari/') > -1;
+		 if(is_safari){
+				dash_url = play_url;
+		  }
+		}
+		//IsSafari();
+
+
+		var widevine_url = res[1].split("widevine_url=")[1].split("|")[0];
+		console.log(widevine_url);
+		var playready_url = res[1].split("playready_url=")[1].split("|")[0];
+		console.log(playready_url);
+		var laurl;
+
+		if (document.documentMode || /Edge/.test(navigator.userAgent)) {
+			laurl = playready_url;
+		}else{
+			laurl = widevine_url;
+		}
+
+			if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+				$("#video_player").append('<video width="100%" height="100%" src="'+ play_url +'" controls></video>');
+	    }else{
+				var playerObject = new saranyuplayer('hls','#video_player',{
+					  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+						'type' : 'video',
+						'content' : 'vod',
+						'file' :  [
+									{
+				            'content_url' : dash_url,
+										'label' : 'Auto',
+										'mediaid' : '123',
+										'poster' : '',
+										'videotitle' : '',
+										'thumbnails' : '',
+										'encryption': 'true',
+				      	    'la_url' : laurl,
+									},
+								   ],
+						'autoplay': 'false',
+						'mute' : 'true',
+						'poster' : '',
+						'hideControlsWhenInactive':'true',
+						'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+						'features' : ['playpause','time','progressbar','videotitle','eventcallbacks','fullscreen'],
+					});
+			}
+		};
+
+	   setInterval(function(){
+				try{
+					if (window.matchMedia("(orientation: portrait)").matches) {
+						/*$("#video_player1").width(screen.availWidth - 0.1);	*/
+						$("#video_player1").width("100%");
+						$("#video_player1").height(window.innerHeight - 0.1);
+					}
+					else if (window.matchMedia("(orientation: landscape)").matches) {
+						// $("#video_player1").width(screen.availWidth- 0.1);
+						$("#video_player1").width("100%");
+						$("#video_player1").height(window.innerHeight - 0.1);
+					}else{
+						/*$("#video_player1").width(screen.availWidth- 0.1);*/
+						$("#video_player1").width("100%");
+						$("#video_player1").height(window.innerHeight - 0.1);
+					}
+				}catch(e){
+				}
+		}, 1000);
+
+
+		function createEventCallBacks(){
+	   			console.log("function called");
+		        hlsPlayer.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+		        		console.log("0:0:2");
+						console.log("video is playing")
+					    player_status = "playing";
+					    console.log("player status is true because of play");
+		        };
+
+		        hlsPlayer.eventcallbacks.onPause = function(presentTime,duration,mediaId){
+		          		player_status = "pause";
+				 		console.log("player status is false because of pause");
+		        };
+
+		        hlsPlayer.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+		         	   player_status = "playing";
+				       console.log("player status is true because of resume");
+		        };
+
+		        hlsPlayer.eventcallbacks.onComplete = function(presentTime,duration,mediaId){
+						player_status = "complete";
+						console.log("welcomee")
+						sendPlaybackTime(0);
+						get_recommendations();
+						console.log("player status is false because of complete");
+				};
+
+		        hlsPlayer.eventcallbacks.onSeeked = function(presentTime,duration,mediaId){
+		        	    player_status = "seeked";
+				        console.log("player status is false because of seeked");
+		        };
+	    }
+
+	 //    function sendPlaybackTime(re_time){
+		// 	var player_time = getcurrentTime();
+		// 	time = convert_seconds_hh_mm_ss(player_time);
+		// 	if (re_time == 0){
+		// 	time = "00:00:00"
+		// 	}
+		// 	console.log("player timer12")
+		// 	console.log(time);
+		// 	console.log("GA event sent");
+		// 	console.log("player timer")
+		// 	var postData = "catalog_id=" + catalogid + "&content_id="+contentid+"&time="+time;
+		// 	$.ajax({
+		// 	type: "POST",
+		// 	url: "/users/player_persistant",
+		// 	data: postData,
+		// 	success: function (e){
+		// 	}
+		// 	});
+		// }
+
+		function stopPlayer(){
+			  try{
+			    clearTimeout(changeUrl);
+			  }catch(e){
+			  }
+
+			  hlsPlayer._videoPlayerControls("stop");
+
+			  var btn1 = document.getElementById("add"); btn1.disabled = false;
+			  var btn2 = document.getElementById("remove"); btn2.disabled = false;
+		}
+
+		function pausePlayer(){
+			hlsPlayer._videoPlayerControls("pause");
+		}
+	  	function playPlayer(){
+			hlsPlayer._videoPlayerControls("play");
+		}
+		function seekPlayer(val){
+			hlsPlayer._videoPlayerControls("seek",val);
+		}
+
+		function getcurrentTime(){
+		 	return hlsPlayer._getCurrentTime();
+		}
+
+	  	function getTotalDuration(){
+			return hlsPlayer._getTotalDuration();
+		}
+
+	 // 	function sendPlaybackTime(re_time){
+		// 	var player_time = getcurrentTime();
+		// 	time = convert_seconds_hh_mm_ss(player_time);
+		// 	if (re_time == 0){
+		// 		time = "00:00:00"
+		// 	}
+		// 		console.log("player timer12")
+		// 		console.log(time);
+		// 		//top.postMessage({ga_event: 'PlaybackTime', media_id: '123', dimensions: { 'dimension5' : hlsPlayer.mediaElement.videoElement.hlsObj.levels[hlsPlayer.mediaElement.videoElement.hlsObj.currentLevel].bitrate}}, url);
+		// 		console.log("GA event sent");
+		// 		console.log("player timer")
+		// 		var postData = "catalog_id=" + catalogid + "&content_id="+contentid+"&time="+time;
+		// 		console.log(postData);
+		// 	$.ajax({
+		// 		type: "POST",
+		// 		url: "/users/player_persistant",
+		// 		data: postData,
+		// 	success: function (e){
+		// 	}
+		// 	});
+		// }
+
+		// var main_persistant_callback = setInterval(function(argument){
+		// 	if((player_status == "playing" || player_status == "seeked") ){
+		// 		var replay_time = 1;
+		// 		sendPlaybackTime(replay_time);
+		// 		console.log("ga for playback time fired");
+		// 	}
+		// },10000);
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="./js/three.js"></script>
+
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+body {
+	background: black;
+	margin:0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: absolute;
+}
+#video_player{
+	height: 100%;
+	width: 100%;
+}
+.sp-canvas-container canvas{
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+.sp-controls-top{
+	display: none !important;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+
+<script type="text/javascript">
+
+		var playerObject = new saranyuplayer('hls','#video_player',{
+				'type' : 'video',
+				'content' : 'vod',
+				'file' :  [
+							{
+		           				//'content_url' : 'https://192.168.1.104:3000/dash_players/cinestaan_vr/vr_videojs/assets/shark.mp4',
+		           				'content_url' : '../360_video/index.m3u8',
+								'label' : 'Auto',
+								'mediaid' : "contentid",
+								'poster' : '/assets/cnalogowide1.png',
+								'videotitle' : "item_title",
+								'thumbnails' : './thumbnails/circus_thumbnails.vtt',
+							},
+						   ],
+				'autoplay': 'true',
+				'mute' : 'true',
+				'poster' : '../demo/saranyuimage.png',
+				'hideControlsWhenInactive':'true',
+				'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+				'features' : ['playpause','volume','time','progressbar','videotitle'],
+		});
+
+</script>
+</html>

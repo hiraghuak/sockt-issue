@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+Template Name: Hoppler
+Author: <a href="http://www.os-templates.com/">OS Templates</a>
+Author URI: http://www.os-templates.com/
+Licence: Free to use under our free template licence terms
+Licence URI: http://www.os-templates.com/template-terms
+-->
+<html lang="">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+<title>Player Demonstration</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<script src="player/external/jquery-1.11.3.min.js"></script>
+<script src="saranyu_player/plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<style type="text/css">
+  .sp-controls-top{
+    opacity: 0;
+  }
+  @font-face {
+      font-family: nexabold;
+      src: url(nexa/nexabold.otf);
+  }
+  @font-face {
+      font-family: nexalight;
+      src: url(nexa/nextlight.otf);
+  }  
+  #header{
+    background-color: #091628; 
+  }
+  #logo{
+    margin: 0.5em !important;
+  }
+  #logo img{
+
+    height: 60px;
+    width: 60px;
+  }
+  .one_third{
+    cursor: pointer;
+  }
+  .navbarz{
+    float: right;
+  }
+  .navbarz ul{
+    list-style: none;
+    font-size: 2em;
+  }
+  .navbarz ul li{
+    display: inline;
+    margin: 0.3em;
+    border-radius: 12px;
+    background-color: #3b4865;
+    text-align: center;
+    padding: 0.2em 0.3em ;
+    cursor: pointer;
+  }  
+  .navbarz ul li:hover{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li.active{ 
+    background-color: slategray;    
+  } 
+  .navbarz ul li a{
+    cursor: pointer;
+    font-family: nexalight;
+  } 
+  .navbarz ul li a.active{
+    /*font-family: nexabold;*/
+  }    
+  .logo-title{
+    padding: 0.5em;
+    font-size: 2em;
+    font-family: nexabold;    
+  }
+  .logo-title2{
+    font-family: nexalight;    
+  }
+  .heading{
+    font-family: nexabold;    
+  }
+  .sub-heading{
+    font-family: nexalight;
+  }
+  body{
+    background-color: #091628;
+    color: white;
+  }
+  #video_player{
+    height: 480px;
+    width: 840px;
+    background-color: black;
+    margin: 0 auto;
+  }
+  .overlay::after{
+    color:inherit;background-color:rgba(0,0,0,.0);
+  }
+  .back-btn{
+    background-color: #3b4865;
+    border: none;
+    right:0;
+    width: auto;
+    height: auto;
+    color: white;
+    position: fixed;
+    margin: 1em 0px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    padding: 0.5em;
+    font-family: nextlight;
+    cursor: pointer !important;
+  }
+  .back-btn:hover{
+    background-color: slategray;
+  }
+  .footer{
+    background-color: #091628;
+    text-align: center;
+    font-family: nextbold;
+  }
+  .footer a{
+    background-color: #091628;
+  }
+  article{
+    cursor: pointer;
+  }
+</style>
+</head>
+<body id="top">
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Top Background Image Wrapper -->
+<div class="bgded overlay" >
+  <!-- ################################################################################################ -->
+  <div class="wrapper row1">
+    <header id="header" class="clear">
+      <!-- ################################################################################################ -->
+      <div id="logo" class="fl_left">
+        <img src="1.png">
+        <span class="logo-title">INSTA<span class="logo-title2">PLAY</span></span>
+      </div>
+      <!-- ################################################################################################ -->
+      <div class="navbarz">
+          <ul>
+            <li class="active">
+              <a class="active">Web Player</a>
+            </li>
+            <li>
+              <a href="index_android.html">Android Player</a>
+            </li>
+            <li>
+              <a href="index_ios.html">IOS Player</a>
+            </li>                      
+          </ul>
+      </div>
+    </header>
+  </div>
+  <!-- ################################################################################################ -->
+
+          <a href="index.html"><button class="back-btn"> Home page</button></a>
+
+          <h1 style="color: white;text-align: center;"> Video Encryption </h1>
+          <br><br>
+
+          <div class="wrapper row3">
+          <main class="hoc container clear">
+            
+            <ul class="nospace group services">
+              <li class="">
+                <article><a custom_href="index_contact.html"><i class="fa fa-4x fa-phone"></i></a>                 
+                  <h1 style="text-align: center; font-family: nexabold;text-transform:none !important;">Please <a style="color: red;" href="index_contact.html">contact</a> us for DEMO</h1>
+                </article>
+              </li>
+            </ul>
+
+
+            <!-- main body -->
+            <!-- ################################################################################################ -->
+            <ul class="nospace group services">
+              <li class="one_third first">
+                <article class="omg" style="cursor: pointer;"><a custom_href="index_protocols_hls.html"><i class="fa fa-4x fa-shield"></i></a>
+                  <h6 class="heading font-x1">Widevine</h6>
+                  <p>Widevine DRM is a Combination of a Few Leading Technologies. MPEG-DASH. This is an open-source adaptive bitrate for streaming video across the internet. Like it's ABR predecessors, DASH leverages standard protocols like HTTP using existing web infrastructure to deliver video to every device.</p>
+                </article>
+              </li>
+              <li class="one_third">
+                <article class="omg"><a custom_href="index_protocols_dash.html"><i class="fa fa-4x fa-shield"></i></a>
+                  <h6 class="heading font-x1">Play Ready</h6>
+                  <p>PlayReady is a media file copy prevention technology from Microsoft that includes encryption, output prevention and digital rights management (DRM). </p>
+                </article>
+              </li>
+              <li class="one_third">
+                <article class="omg"><a custom_href="index_protocols_mp4.html"><i class="fa fa-4x fa-shield"></i></a>
+                  <h6 class="heading font-x1"> AES Encryption </h6>
+                  <p>AES-128<br>
+                    It encrypts the whole segment with the Advanced Encryption Standard (AES) using a 128 bit key, Cipher Block Chaining (CBC) and PKCS7 padding. The CBC will be restarted with each segment using the Initialization Vector (IV) provided.
+                    <br><br>
+                    SAMPLE-AES<br>
+                    It encrypts each individual media sample (e.g., video, audio, etc.) by its own with AES. The specific encryption and packaging depends on the media format.
+                    </p>
+                </article>
+              </li>
+            </ul>
+            <!-- ################################################################################################ -->
+            <!-- / main body -->
+            <div class="clear"></div>
+          </main>          
+        </div>
+</div>
+
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row5 footer">
+  <div id="copyright" class="hoc clear">
+    <!-- ################################################################################################ -->
+    <p class="fl_center">Copyright &copy; 2018 - All Rights Reserved <a href="http://www.saranyu.in"><img src='logo.png'></a> </p>
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+<script type="text/javascript">
+
+    $("article").click(function(){      
+      if($(this).hasClass("omg")){
+        return ;
+      }
+
+      var navigate_to = $(this).find('a').attr('custom_href');
+      if(navigate_to === "index_vr.html" && mobileAndTabletcheck() === true){
+        console.log(navigate_to);
+        window.location.href = "index_vr_mobile.html";
+        return;
+      }
+      console.log(navigate_to);
+      window.location.href = navigate_to;
+    });    
+</script>
+</body>
+</html>

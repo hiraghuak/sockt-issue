@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5  HLS Player</title>
+<link rel="stylesheet" type="text/css" href="../skins/sphls.css">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72765259-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="../plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+	margin: auto;
+}
+#video_player{
+	height: 360px;
+	width: 640px;
+	background-color: black;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+var playerObject;
+var featuresConfig = {}
+
+var mobileFeaturesArray = ['playpause','progressbar','fullscreen','time','eventcallbacks'];
+var desktopFeaturesArray = ['playpause','progressbar','fullscreen','volume','time','qualityswitch','bigicons','eventcallbacks','advertisement'];
+	
+	featuresConfig.featuresArray = desktopFeaturesArray;
+	featuresConfig.autoPlay = 'true';
+
+
+	function checkMobileToAssignConfig(){
+		 if( navigator.userAgent.match(/Android/i)
+				 || navigator.userAgent.match(/webOS/i)
+				 || navigator.userAgent.match(/iPhone/i)
+				 || navigator.userAgent.match(/iPad/i)
+				 || navigator.userAgent.match(/iPod/i)
+				 || navigator.userAgent.match(/BlackBerry/i)
+				 || navigator.userAgent.match(/Windows Phone/i)
+				 || navigator.userAgent.match(/Mobile Safari/i)
+				 )
+				 {
+					featuresConfig.featuresArray = mobileFeaturesArray;
+					featuresConfig.autoPlay = 'false'
+				 }
+	}
+	checkMobileToAssignConfig();
+
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+					{
+	     				'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',
+            			'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '../demo/images/elephants-dream.jpg',
+						'videotitle' : 'Elephants Dream',						
+					},
+				  ],
+		'autoplay':featuresConfig.autoPlay,
+		'mute' : 'false',
+		'poster' : '../demo/saranyuimage.png',
+		'hideControlsWhenInactive':'true',
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : featuresConfig.featuresArray,
+		'advertisement' : {
+			'cues' : 'true',
+			'vmap' : 'true',
+			'adsets' : [
+				{
+				'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=',				
+				'schedule' : 'preroll'
+				},
+			]},		
+	});
+
+	playerObject.createEventCallBacks = function(){
+    	console.log("function called");
+        playerObject.referenceObj.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+        	console.log("event occured play");
+        };
+        playerObject.referenceObj.eventcallbacks.onPause = function(presentTime,duration,mediaId){
+			console.log("event occured pause");
+        };
+        playerObject.referenceObj.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+			console.log("event occured resume");
+        };
+        playerObject.referenceObj.eventcallbacks.onComplete = function(presentTime,duration,mediaId){
+    		console.log("event occured complete");
+    	};
+        playerObject.referenceObj.eventcallbacks.onSeeked = function(presentTime,duration,mediaId){
+			console.log("event occured seeked");
+        };
+        playerObject.referenceObj.eventcallbacks.onRelatedVideoClick = function(mediaid,catalogid){
+			console.log("event occured related video");
+		};
+    }
+
+	$(window).on("orientationchange",function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+				});
+
+				$(window).on("load", function (){
+						if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+
+				});
+
+
+	function stopPlayer(){
+  	   try{
+          clearTimeout(changeUrl);
+  		  }catch(e){
+  			}
+
+		hlsPlayer._videoPlayerControls("stop");
+
+		var btn1 = document.getElementById("add"); btn1.disabled = false;
+		 var btn2 = document.getElementById("remove"); btn2.disabled = false;
+	}
+
+	function pausePlayer(){
+		hlsPlayer._videoPlayerControls("pause");
+	}
+
+	function seekPlayer(val){
+		hlsPlayer._videoPlayerControls("seek",val);
+	}
+
+	function getcurrentTime(){
+
+	return hlsPlayer._getCurrentTime();
+
+	}
+
+</script>
+</html>

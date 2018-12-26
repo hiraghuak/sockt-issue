@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+
+<script>
+(function inIframe () {
+	console.log("inside iframe");
+	var status = window.self !== window.top;
+    try {
+    	console.log(status);
+        return status;
+    } catch (e) {    	
+    	console.log("inside iframe true")
+        return true;
+    }
+})();
+
+  // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  // })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  // ga('create', 'UA-72765259-1', 'auto');
+  // ga('send', 'pageview');
+</script>
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+/*body{
+	background-color: silver;
+}
+#video_player{
+	height: 360px;
+	width: 640px;
+	background-color: black;
+	margin: 0 auto;
+}*/
+body {
+	background: black;
+	margin:0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: absolute;
+}
+#video_player{
+	height: 100%;
+	width: 100%;
+}
+.just_hide{
+	display: none !important;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+
+<script type="text/javascript">
+
+var player_status = false;
+function convert_seconds_hh_mm_ss(sec){
+	var hours = Math.floor(sec / 3600);
+	var min = Math.floor((sec - (hours*3600)) / 60);
+	var seconds = Math.floor(sec % 60);
+	return hours +":"+ min + ":"+ seconds
+}
+
+function convert_hr_mm_ss_to_second(val){
+	var sec = 0
+	tt = val.split(":");
+	sec = tt[0]*3600+tt[1]*60+tt[2]*1;
+	return sec;
+}
+		
+ww = window.innerWidth-0.1;
+wh = window.innerHeight-0.1;
+$("#video_player1").parent().css( "width", ww);
+$("#video_player1").parent().css( "height", wh);
+
+$(window).resize(function(){
+	ww = window.innerWidth-0.1;
+	wh = window.innerHeight-0.1;
+	$("#video_player1").parent().css( "width", ww);
+	$("#video_player1").parent().css( "height", wh);
+});
+
+var sequence_no = 0;
+var contenturl = location.href;    
+var res = contenturl.split("contenturl=");
+var contenturlobtained = res;
+var play_url = 	contenturlobtained[1].split("|")[0];
+console.log(play_url)
+var login_user_state = contenturlobtained[1].split("user_logedin=")[1].split("|")[0];
+var catalogid = contenturlobtained[1].split("catalog_id=")[1].split("|")[0];
+console.log(catalogid);
+var contentid = contenturlobtained[1].split("content_id=")[1].split("|")[0];
+console.log(contentid);
+var srt_file = "";
+// var srt_file = contenturlobtained[1].split("srt_file=")[1].split("|")[0];
+if(contenturlobtained[1].indexOf("srt_file") > -1){
+ srt_file = contenturlobtained[1].split("srt_file=")[1].split("|")[0];
+}
+var season_sequence_no = contenturlobtained[1].split("season_sequence_no=")[1].split("|")[0];
+console.log(season_sequence_no)
+var item_title = contenturlobtained[1].split("item_title=")[1].split("|")[0].replace(/%20/g, " ");
+console.log(item_title);
+var theme = contenturlobtained[1].split("theme=")[1].split("|")[0];
+console.log(theme);
+var related_auto_play = contenturlobtained[1].split("relatedvideoautoplay=")[1].split("|")[0];
+console.log(related_auto_play);
+var show_catalog_id = contenturlobtained[1].split("show_cat_id=")[1].split("|")[0];
+console.log(show_catalog_id);
+var show_content_id = contenturlobtained[1].split("show_con_id=")[1].split("|")[0];
+console.log(show_content_id);
+var playback_time = contenturlobtained[1].split("playback_time=")[1].split("|")[0];
+console.log(playback_time);
+console.log("playback time1");
+var time = convert_hr_mm_ss_to_second(contenturlobtained[1].split("playback_time=")[1].split("|")[0]);
+console.log("after conversion from hh:mm:ss to seconds");
+console.log(time);
+console.log("playback time");
+console.log("user status");
+console.log(login_user_state);
+if(contenturlobtained[1].indexOf("item_sequence_no") > -1){
+ sequence_no = contenturlobtained[1].split("item_sequence_no=")[1].split("|")[0];
+}
+console.log(sequence_no);
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+
+var recommendations_ajax_response;
+var checkRecommendationAjax = false;
+var features_array = ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','eventcallbacks','hotkeys','advertisement','relatedvideo','logo'];
+
+if (srt_file !== "") {
+	features_array = ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','eventcallbacks','hotkeys','advertisement','relatedvideo','subtitles','logo'];
+}
+
+var playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+
+					{
+            'content_url' : play_url,
+						'label' : 'Auto',
+						'mediaid' : contentid,
+						'poster' : '/assets/cnalogowide_new.jpg',
+						'videotitle' : decodeURI(item_title),
+						'thumbnails' : './thumbnails/circus_thumbnails.vtt',
+						'subtitles' :[
+						{
+							'lang' : 'EN',
+							'file' : srt_file
+						}]
+					},
+					],
+        'relatedvideos' :  [
+					{
+         		'content_url' : '',
+						'label' : 'Auto',
+						'mediaid' : 'LMN',
+						'catalogid':'12345',
+						'poster' : '',
+						'videotitle' : '',
+						'thumbnails' : ''
+					},
+				  ],
+   		'relatedvideoautoplay':related_auto_play,
+		'autoplay': 'true',
+		'seekonload': time,
+		'mute' : 'false',
+		'poster' : '../demo/saranyuimage.png',
+		'advertisement' : {
+							'cues' : 'true',
+							'adsets' : [
+                                        
+		              				  ]
+						  },
+		'hideControlsWhenInactive':'true',						  
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : features_array,
+});
+
+				setTimeout(function(){
+				  get_recommendations(); 
+				}, 7000);
+
+				function get_recommendations(){
+					if(!checkRecommendationAjax){
+							$.ajax({
+							type: "GET",
+							url: "/users/recommendations",
+							data: {theme: theme,catalog_id: catalogid,content_id: contentid,show_catalog_id: show_catalog_id, show_content_id: show_content_id,sequence_no: sequence_no,season_sequence_no: season_sequence_no},
+							success: function (response){
+								console.log(response.min_recs)
+								if(response.min_recs.length > 0){
+									recommendations_ajax_response = response;
+									hlsPlayer._buildrelatedvideo.flushRelatedVideos();
+									hlsPlayer._buildrelatedvideo.appendRelatedVideos(recommendations_ajax_response.min_recs,related_auto_play);	
+								}else{
+									hlsPlayer._buildrelatedvideo.flushRelatedVideos();
+								  $('.sp-related-panel').addClass('just_hide');
+								}
+							}
+							});
+						checkRecommendationAjax = true;
+					}
+				}
+
+
+			    $(window).on("orientationchange",function(){
+						if(is_android_native_browser){
+							try{
+								$("#video_player").width(window.innerWidth - 0.1);
+								$("#video_player").height(window.innerHeight - 0.1);
+							}catch(e){
+							}
+						}else if(is_iPhone){
+							$("#video_player").width("100%");
+						$("#video_player").height("60%");
+						}
+						else{
+							try{
+								if (window.matchMedia("(orientation: portrait)").matches) {
+								// you're in portrait mode
+									$("#video_player").width(screen.availWidth - 0.1);
+									$("#video_player").height((screen.availHeight - 0.1)/2);
+								}
+								else if (window.matchMedia("(orientation: landscape)").matches) {
+								// you're in landscape mode
+									$("#video_player").width(screen.availWidth - 0.1);
+									$("#video_player").height((screen.availHeight - 0.1)/2);
+								}else{
+									// if browser is old and not capable detect orientation
+									$("#video_player").width(screen.availWidth - 0.1);
+									$("#video_player").height((screen.availHeight - 0.1)/2);
+								}
+
+							}catch(e){
+							}
+						}
+				});
+
+				$(window).on("load", function (){
+						if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+
+				});
+
+
+	function stopPlayer(){
+  	   try{
+          clearTimeout(changeUrl);
+  		  }catch(e){
+  			}
+
+		hlsPlayer._videoPlayerControls("stop");
+
+		var btn1 = document.getElementById("add"); btn1.disabled = false;
+		 var btn2 = document.getElementById("remove"); btn2.disabled = false;
+	}
+
+	function pausePlayer(){
+		hlsPlayer._videoPlayerControls("pause");
+	}
+  function playPlayer(){
+		hlsPlayer._videoPlayerControls("play");	
+	}
+	function seekPlayer(val){
+		hlsPlayer._videoPlayerControls("seek",val);
+	}
+
+	function getcurrentTime(){
+	  return hlsPlayer._getCurrentTime();
+	}
+
+  function getTotalDuration(){  
+		return hlsPlayer._getTotalDuration();
+	}
+  
+
+  function sendPlaybackTime(re_time){
+		var player_time = getcurrentTime();
+		time = convert_seconds_hh_mm_ss(player_time);
+		if (re_time == 0){
+		time = "00:00:00"	
+		}
+		console.log("player timer12")
+		console.log(time);
+		//top.postMessage({ga_event: 'PlaybackTime', media_id: '123', dimensions: { 'dimension5' : hlsPlayer.mediaElement.videoElement.hlsObj.levels[hlsPlayer.mediaElement.videoElement.hlsObj.currentLevel].bitrate}}, url);
+		console.log("GA event sent");
+		console.log("player timer")
+		var postData = "catalog_id=" + catalogid + "&content_id="+contentid+"&time="+time;
+		$.ajax({
+		type: "POST",
+		url: "/users/player_persistant",
+		data: postData,
+		success: function (e){
+		}
+		});
+	}
+  
+  function sendPlaybackTimeForRelatedVideo(re_time,catalogid,contentid){
+		var player_time = getcurrentTime();
+		time = convert_seconds_hh_mm_ss(player_time);
+		if (re_time == 0){
+		time = "00:00:00"	
+		}
+		console.log("player timer12")
+		console.log(time);
+		console.log("playback time event for related video in active");
+		console.log("GA event sent");
+		console.log("player timer")
+		var postData = "catalog_id=" + catalogid + "&content_id="+contentid+"&time="+time;
+		$.ajax({
+		type: "POST",
+		url: "/users/player_persistant",
+		data: postData,
+		success: function (e){
+		}
+		});
+	}
+
+	var current_url = window.location.protocol + "//" + window.location.host;
+  var url = "";
+	if (current_url == "http://localhost:3000"){
+		url = "http://localhost:3000";
+	}
+	else if (current_url == "http://54.196.1.124:3000") {
+  	url = "http://54.196.1.124:3000";
+	}
+		else if (current_url == "http://54.165.33.205") {
+  	url = "http://54.165.33.205";
+	}
+	else{
+   	url = "http://54.165.33.205";
+	}
+	function createEventCallBacks(){
+    console.log("function called");
+        hlsPlayer.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+        	console.log("0:0:2");
+					console.log("video is playing")
+			    player_status = "playing";
+			    console.log("player status is true because of play");
+          // ga('send','event','SaranyuHlsHTML5Player' , 'play' , "VoD" , presentTime);
+          // console.log('send','event','SaranyuHlsHTML5Player' , 'play' , mediaId , presentTime , duration);
+          top.postMessage({ga_event: 'playStart', media_id: mediaId, dimensions: { 'dimension5' : hlsPlayer.mediaElement.videoElement.hlsObj.levels[hlsPlayer.mediaElement.videoElement.hlsObj.currentLevel].bitrate}}, url);
+        };
+
+        hlsPlayer.eventcallbacks.onPause = function(presentTime,duration,mediaId){
+                // ga('send','event','SaranyuHlsHTML5Player', 'pause' , "VoD" , presentTime);
+                // console.log('send','event','SaranyuHlsHTML5Player', 'pause' , mediaId , presentTime , duration);
+          player_status = "pause";
+		 			console.log("player status is false because of pause");
+        };
+
+        hlsPlayer.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+                // ga('send','event','SaranyuHlsHTML5Player', 'resume' , "VoD" , presentTime);
+                // console.log('send','event','SaranyuHlsHTML5Player', 'resume' , mediaId , presentTime , duration);
+          player_status = "playing";
+		      console.log("player status is true because of resume");
+        };
+
+        hlsPlayer.eventcallbacks.onComplete = function(presentTime,duration,mediaId){
+                // ga('send','event','SaranyuHlsHTML5Player', 'complete' , "VoD" , presentTime);
+                // console.log('send','event','SaranyuHlsHTML5Player', 'complete' , mediaId , presentTime , duration);
+          top.postMessage({ga_event: 'playComplete', media_id: mediaId, dimensions: { 'dimension2' : '', 'dimension4' : '', 'dimension5' : hlsPlayer.mediaElement.videoElement.hlsObj.levels[hlsPlayer.mediaElement.videoElement.hlsObj.currentLevel].bitrate, 'dimension6' : '', 'dimension7' : "Registered", 'dimension8' : '', 'metric3' : 1}} , url);
+					player_status = "complete";
+					console.log("welcomeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+					sendPlaybackTime(0);
+					get_recommendations();
+					console.log("player status is false because of complete");
+			  };
+
+        hlsPlayer.eventcallbacks.onSeeked = function(presentTime,duration,mediaId){
+                // ga('send','event','SaranyuHlsHTML5Player', 'seeked' , "VoD" , presentTime);
+                // console.log('send','event','SaranyuHlsHTML5Player', 'seeked' , mediaId , presentTime , duration);
+          player_status = "seeked";
+		      console.log("player status is false because of seeked");
+        };
+        hlsPlayer.eventcallbacks.onRelatedVideoClick = function(mediaid,catalogid){
+					// ga('send','event','SaranyuHlsHTML5Player' , 'relatedvideo' , "VoD" , mediaid);
+					console.log("Hiii related video!");
+					console.log(mediaid);
+					console.log(catalogid);
+					clearInterval(main_persistant_callback);
+					
+					try{
+						clearInterval(related_persistant_callback);
+					}catch(e){
+
+					}
+					related_persistant_callback = setInterval(function(argument){
+						if(login_user_state == "true" && (player_status == "playing" || player_status == "seeked") ){
+							var replay_time = 1;
+							sendPlaybackTimeForRelatedVideo(replay_time,catalogid,mediaid);
+							console.log("ga for playback time of related video fired");
+						}
+					},10000)
+				};
+    }
+
+
+	var main_persistant_callback = setInterval(function(argument){
+		if(login_user_state == "true" && (player_status == "playing" || player_status == "seeked") ){
+			var replay_time = 1;
+			sendPlaybackTime(replay_time);
+			console.log("ga for playback time fired");
+		}
+	},10000)
+
+</script>
+</html>
+

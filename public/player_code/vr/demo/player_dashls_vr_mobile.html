@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+
+<script src="../external/jquery-1.11.3.min.js"></script>
+
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.js" type="text/javascript" ></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+	padding: 0em;
+	margin: 0em;
+	height: 100%;
+	width: 100%;
+}
+#video_player{
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	margin: 0 auto;
+	position: absolute;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+
+</body>
+<script type="text/javascript">
+	
+	var nua = navigator.userAgent;
+	var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+	var is_iPhone = (nua.match(/iphone/i) !== null);
+	//Player Congfiguration
+	
+	var currentURLType="hls";
+	var laurl = "https://widevine-dash.ezdrm.com/proxy?pX=ABFFFA&expiry=1503575622&us=700bc0a0154b6bf31909fcdafa2efcae"
+
+	var playerObject;
+
+	playerObject = new saranyuplayer('hls','#video_player',{
+	    'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+		            {
+							'content_url' : '../360_video/hd/hd.m3u8',
+							//'content_url' : 'https://media.cinestaango.com/videos/dash/59318cdd69702d73fc6f0000/stream.mpd',
+      						'label' : 'Auto',
+      						'mediaid' : '123',
+      						'poster' : '../demo/images/elephants-dream.jpg',
+      						'videotitle' : 'Big Bunny 0',
+							'encryption': 'false',
+			      			'la_url' : 'https://widevine-dash.ezdrm.com/proxy?pX=ABFFFA&expiry=1511854551&us=8a28a9e7345840efeeeb970d370a95ca'
+					},
+				  ],
+		'autoplay':'false',
+		'mute' : 'false',
+		'poster' : '../demo/saranyuimage.png',
+		'advertisement' : {
+							'cues' : 'true',
+							'adsets' : [
+
+		              				  ]
+						  },						  
+		'hideControlsWhenInactive':'true',
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'bitrate'}, // metric can be resolution or bitrate.
+		'features' : ['playpause','time','progressbar','fullscreen','eventcallbacks','advertisement','360'],
+
+			});
+
+				$(window).on("orientationchange",function(){
+					if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("50%");
+					}
+					else{
+						try{
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+				});
+
+				$(window).load(function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+
+				});
+</script>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<script src="external/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="saranyu_player/plugin/sp1.js"></script>
+	<style>
+		body {
+			background: #eee;
+			margin:0px;
+			padding: 0px;
+		}
+		#video_player{
+			height: 100%;
+			width: 100%;
+			position: absolute;
+		}
+		.sp-player-inner .sp-player-layers .sp-player-poster{
+			    position: absolute !important;
+			    height: 132% !important;
+			    width: 100% !important;
+			    top: -40px !important;
+		}
+</style>
+</head>
+
+<body style="background-color: rgb(38,38,38); height: 100%; width: 100%; overflow: hidden;">
+
+	<div id="video_player">
+	</div>
+
+	<script type="text/javascript" charset="utf-8">
+
+		var player_status = false;
+		function convert_seconds_hh_mm_ss(sec) {
+			var hours = Math.floor(sec / 3600);
+			var min = Math.floor((sec - (hours * 3600)) / 60);
+			var seconds = Math.floor(sec % 60);
+			return hours + ":" + min + ":" + seconds
+		}
+
+		function convert_hr_mm_ss_to_second(val) {
+			var sec = 0
+			tt = val.split(":");
+			sec = tt[0] * 3600 + tt[1] * 60 + tt[2] * 1;
+			return sec;
+		}
+
+		window.onload = function () {
+			var contenturl = location.href;
+			var res = contenturl.split("contenturl=");
+			var play_url = res[1].split("&thumbnailurl=")[0];
+			var thumbnail_url = res[1].split("&thumbnailurl=")[1];
+
+			var addAutoplay = false;
+			var addMute = false;
+
+			var autoplay = res[1].split("&autoplay=")[1];
+
+			if (undefined !== autoplay) {
+				autoplay = autoplay.split("&")[0];
+			}
+
+			//var autoplay = res[1].split("&autoplay=")[1].split("&")[0];
+
+			var mute = res[1].split("&mute=")[1];
+
+			if (undefined != mute) {
+				mute = mute.split("&")[0];
+			}
+
+			//var mute = res[1].split("&mute=")[1].split("&")[0];
+
+			if ("true" == autoplay) {
+				addAutoplay = true;
+			}
+
+			if ("true" == mute) {
+				addMute = true;
+			}
+
+			console.log("autoplay : " + autoplay + " mute : " + mute);
+
+			if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+				//$("#video_player").append('<video width="100%" height="100%" src="'+ play_url +'" controls></video>');
+
+				var playerObject = new saranyuplayer('hls', '#video_player', {
+					'licence': '6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+					'type': 'video',
+					'content': 'vod',
+					'file': [
+						{
+							//'content_url': play_url,
+							'content_url': "https://players-saranyu.s3-ap-southeast-1.amazonaws.com/saranyu_players_demo/adstest/video/Exclusive%20Interview%20with%20Dhanraj%20Pillay.mp4",
+							'label': 'Auto',
+							'mediaid': '123',
+							'poster': thumbnail_url,
+							'videotitle': '',
+							'thumbnails': '',
+						},
+					],
+					'autoplay': addAutoplay,
+					'mute': addMute,
+
+					//ads section start
+					'advertisement': {
+						'cues': 'true',
+						'adsets': [
+							{
+									'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?iu=/1673516/EI-Video-test1-640x480&description_url=[placeholder]&env=vp&impl=s&correlator=&tfcd=0&npa=0&gdfp_req=1&output=vast&sz=640x480&ciu_szs=640x480&unviewed_position_start=1',
+								'schedule': 'preroll'
+							}
+						]
+					},
+					//ads section end
+
+					'poster': thumbnail_url,
+					'hideControlsWhenInactive': 'true',
+					'qualityswitch': { 'label': 'Auto', 'metric': 'resolution' }, // metric can be resolution or bitrate.
+					'features': ['playpause', 'time', 'volume', 'progressbar', 'videotitle', 'eventcallbacks', 'fullscreen', 'qualityswitch', 'bigicons', 'advertisement'],
+				});
+
+				$("body").bind("DOMNodeInserted", function() {
+					$('vidoe').attr('playsinline', '');
+				 });
+				 
+
+
+			} else {
+				var playerObject = new saranyuplayer('hls', '#video_player', {
+					'licence': '6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+					'type': 'video',
+					'content': 'vod',
+					'file': [
+						{
+							'content_url': "https://players-saranyu.s3-ap-southeast-1.amazonaws.com/saranyu_players_demo/adstest/video/Exclusive%20Interview%20with%20Dhanraj%20Pillay.mp4",
+							'label': 'Auto',
+							'mediaid': '123',
+							'poster': thumbnail_url,
+							'videotitle': '',
+							'thumbnails': '',
+						},
+					],
+					'autoplay': addAutoplay,
+					'mute': addMute,
+
+					//ads section start
+					'advertisement': {
+						'cues': 'true',
+						'adsets': [
+							{
+								'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?iu=/1673516/EI-Video-test1-640x480&description_url=[placeholder]&env=vp&impl=s&correlator=&tfcd=0&npa=0&gdfp_req=1&output=vast&sz=640x480&ciu_szs=640x480&unviewed_position_start=1',
+								'schedule': '150'
+							},
+							{
+								'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?iu=/1673516/EI-Video-test1-640x480&description_url=[placeholder]&env=vp&impl=s&correlator=&tfcd=0&npa=0&gdfp_req=1&output=vast&sz=640x480&ciu_szs=640x480&unviewed_position_start=1',
+								'schedule': '200'
+							}
+						]
+					},
+					//ads section end
+					'poster': thumbnail_url,
+					'hideControlsWhenInactive': 'true',
+					'qualityswitch': { 'label': 'Auto', 'metric': 'resolution' }, // metric can be resolution or bitrate.
+					'features': ['playpause', 'time', 'volume', 'progressbar', 'videotitle', 'eventcallbacks', 'fullscreen', 'qualityswitch', 'bigicons', 'advertisement'],
+				});
+			}
+			$("body").on("DOMNodeInserted", function() {
+				$('video').attr('playsinline', '');
+			 });
+		};
+
+		setInterval(function () {
+			try {
+				if (window.matchMedia("(orientation: portrait)").matches) {
+					/*$("#video_player1").width(screen.availWidth - 0.1);	*/
+					$("#video_player1").width("100%");
+					$("#video_player1").height(window.innerHeight - 0.1);
+				}
+				else if (window.matchMedia("(orientation: landscape)").matches) {
+					// $("#video_player1").width(screen.availWidth- 0.1);
+					$("#video_player1").width("100%");
+					$("#video_player1").height(window.innerHeight - 0.1);
+				} else {
+					/*$("#video_player1").width(screen.availWidth- 0.1);*/
+					$("#video_player1").width("100%");
+					$("#video_player1").height(window.innerHeight - 0.1);
+				}
+			} catch (e) {
+			}
+		}, 1000);
+
+
+		function createEventCallBacks() {
+			console.log("function called");
+			hlsPlayer.eventcallbacks.onPlay = function (presentTime, duration, mediaId) {
+				console.log("0:0:2");
+				console.log("video is playing")
+				player_status = "playing";
+				console.log("player status is true because of play");
+			};
+
+			hlsPlayer.eventcallbacks.onPause = function (presentTime, duration, mediaId) {
+				player_status = "pause";
+				console.log("player status is false because of pause");
+			};
+
+			hlsPlayer.eventcallbacks.onResume = function (presentTime, duration, mediaId) {
+				player_status = "playing";
+				console.log("player status is true because of resume");
+			};
+
+			hlsPlayer.eventcallbacks.onComplete = function (presentTime, duration, mediaId) {
+				player_status = "complete";
+				console.log("welcomee")
+				sendPlaybackTime(0);
+				get_recommendations();
+				console.log("player status is false because of complete");
+			};
+
+			hlsPlayer.eventcallbacks.onSeeked = function (presentTime, duration, mediaId) {
+				player_status = "seeked";
+				console.log("player status is false because of seeked");
+			};
+		}
+
+		function pausePlayer() {
+			hlsPlayer._videoPlayerControls("pause");
+		}
+		function playPlayer() {
+			hlsPlayer._videoPlayerControls("play");
+		}
+		function seekPlayer(val) {
+			hlsPlayer._videoPlayerControls("seek", val);
+		}
+
+		function getcurrentTime() {
+			return hlsPlayer._getCurrentTime();
+		}
+
+		function getTotalDuration() {
+			return hlsPlayer._getTotalDuration();
+		}
+
+	</script>
+</body>
+
+</html>

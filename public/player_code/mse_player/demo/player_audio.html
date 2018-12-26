@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+<link rel="stylesheet" type="text/css" href="../skins/sphls.css">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72765259-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="../plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+}
+#video_player{
+	height: 40px;
+	width: 640px;
+	background-color: black;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+var playerObject;
+
+
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+
+
+					{
+	     //'content_url' : 'http://d3t8l359sev1gb.cloudfront.net/test/vivek/108892/583d6b8b506c615c3f060000_108892_main.m3u8',
+            'content_url' : 'http://198.50.108.234/WAM/multiaudio/playlist.m3u8',
+            //'content_url' : 'https://wowzaec2demo.streamlock.net/vod-multitrack/_definst_/smil:ElephantsDream/ElephantsDream.smil/playlist.m3u8',
+          	//'content_url' : 'http://butlerccwebdev.net/support/html5-video/media/bigbuckbunnytrailer-480p.mp4',
+						'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '../demo/images/elephants-dream.jpg',
+						'videotitle' : 'Elephants Dream',
+						'thumbnails' : './thumbnails/elephandream_thumbnails.vtt',
+           			    'subtitles' : [
+		                            	{
+											 'lang' : 'EN',
+		                            		'file' : '../demo/Elephants_Dream_eng.srt'
+									    }
+		                          		,{
+										 	'lang' : 'ES',
+		                            		'file' : '../demo/Elephants_Dream_spanish.srt'
+									    }
+								       ],
+					},
+					{
+         			   'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',
+						'label' : 'Auto',
+						'mediaid' : 'LMN',
+						'poster' : '../demo/images/Big.Buck.Bunny.png',
+						'videotitle' : 'Big Bunny',
+						'thumbnails' : './thumbnails/bigbunny_thumbnails.vtt'
+					},
+				    {
+						'content_url' : 'http://hellotv-vh.akamaihd.net/i/cds/191159_PC_Download.smil/master.m3u8?token=8s2G1w06VGqK',
+						'label' : 'Auto',
+						'mediaid' : '456',
+						'poster' : '../demo/images/circus.jpg',
+			 			'videotitle' : 'Circus Video',
+			 			'thumbnails' : './thumbnails/circus_thumbnails.vtt'
+					},
+					{
+            			'content_url' : 'https://cdn.theoplayer.com/video/star_wars_episode_vii-the_force_awakens_official_comic-con_2015_reel_(2015)/index.m3u8',
+						'label' : 'Auto',
+						'mediaid' : '789',
+						'poster' : '../demo/images/starwars.jpg',
+						'videotitle' : 'Star Wars Trailer',
+						'thumbnails' : './thumbnails/starwars_thumbnails.vtt'
+					},
+				    {
+						'content_url' : 'http://hellotv-vh.akamaihd.net/i/cds/191159_PC_Download.smil/master.m3u8?token=8s2G1w06VGqK',
+						'label' : 'Auto',
+						'mediaid' : 'ABC',
+						'poster' : '../demo/images/circus.jpg',
+			 			'videotitle' : 'Circus Video',
+			 			'thumbnails' : './thumbnails/circus_thumbnails.vtt'
+					},
+					{
+            			//'content_url' : '',
+						'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',
+						'label' : 'Auto',
+						'mediaid' : 'DEF',
+						'poster' : '../demo/images/Big.Buck.Bunny.png',
+						'videotitle' : 'Big Bunny',
+						'thumbnails' : './thumbnails/bigbunny_thumbnails.vtt'
+					},
+				    {
+						'content_url' : 'http://hellotv-vh.akamaihd.net/i/cds/191159_PC_Download.smil/master.m3u8?token=8s2G1w06VGqK',
+						'label' : 'Auto',
+						'mediaid' : 'GHI',
+						'poster' : '../demo/images/circus.jpg',
+			 			'videotitle' : 'Circus Video',
+			 			'thumbnails' : './thumbnails/circus_thumbnails.vtt'
+					},
+					{
+            			'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',
+						'label' : 'Auto',
+						'mediaid' : 'LMN',
+						'poster' : '../demo/images/Big.Buck.Bunny.png',
+						'videotitle' : 'Big Bunny',
+						'thumbnails' : './thumbnails/bigbunny_thumbnails.vtt'
+					},
+				    {
+						'content_url' : 'http://hellotv-vh.akamaihd.net/i/cds/191159_PC_Download.smil/master.m3u8?token=8s2G1w06VGqK',
+						'label' : 'Auto',
+						'mediaid' : 'OPQ',
+						'poster' : '../demo/images/circus.jpg',
+			 			'videotitle' : 'Circus Video',
+			 			'thumbnails' : './thumbnails/circus_thumbnails.vtt'
+					},
+					{
+						'content_url' : 'https://cdn.theoplayer.com/video/star_wars_episode_vii-the_force_awakens_official_comic-con_2015_reel_(2015)/index.m3u8',
+						'label' : 'Auto',
+						'mediaid' : 'RST',
+			 			'poster' : '../demo/images/starwars.jpg',
+			 			'videotitle' : 'Star Wars trailer',
+			 			'thumbnails' : './thumbnails/starwars_thumbnails.vtt'
+     				}
+
+				  ],
+
+		'autoplay':'true',
+		'mute' : 'false',
+		'poster' : '../demo/saranyuimage.png',
+		'nxplayback' :  [
+							{ 'speed' :'0.25','label' : 'Slowest' , 'default' : 'false' },
+							{ 'speed' :'0.5','label' : 'Slow', 'default' : 'false' },
+							{ 'speed' : '1' ,'label' : 'Normal', 'default' : 'true' },
+							{ 'speed' : '1.25', 'label' : 'Fast','default' : 'false' },
+							{ 'speed' : '1.5' ,'label' : 'Faster', 'default' : 'false' },
+							{ 'speed' : '2' ,'label' : 'Fastest', 'default' : 'false' }
+						],
+		'advertisement' : {
+							'cues' : 'true',
+							'adsets' : [
+
+		              				  ]
+						  },
+'hideControlsWhenInactive':'false',						  
+'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+'features' : ['playpause','volume','time','closebtn'],
+
+	});
+
+	$(window).on("orientationchange",function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+				});
+
+				$(window).on("load", function (){
+						if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+
+				});
+
+
+	function stopPlayer(){
+  	   try{
+          clearTimeout(changeUrl);
+  		  }catch(e){
+  			}
+
+		hlsPlayer._videoPlayerControls("stop");
+
+		var btn1 = document.getElementById("add"); btn1.disabled = false;
+		 var btn2 = document.getElementById("remove"); btn2.disabled = false;
+	}
+
+	function pausePlayer(){
+		hlsPlayer._videoPlayerControls("pause");
+	}
+
+	function seekPlayer(val){
+		hlsPlayer._videoPlayerControls("seek",val);
+	}
+
+	function getcurrentTime(){
+
+	return hlsPlayer._getCurrentTime();
+
+	}
+
+
+
+</script>
+</html>
+

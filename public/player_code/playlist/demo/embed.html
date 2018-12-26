@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+<link rel="stylesheet" type="text/css" href="../skins/sphls.css">
+<script src="../external/jquery-3.1.1.min.js"></script>
+<script src="../external/player_crypt.js"></script>
+<script src="../plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+
+<style type="text/css">
+body {
+	background: black;
+	margin:0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: absolute;
+}
+#video_player{
+	height: 100%;
+	width: 100%;
+}
+#login_overlay{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: gray;
+    z-index: 10000;
+    opacity: 0.9;
+    display: none;
+    text-align: center;
+}
+#login_overlay .login-popup-request{
+    background-color: #b40701  !important;
+    cursor: pointer;
+    height: 2em;
+    width: auto;
+    color: white;
+    padding: 1em;
+    line-height: 2em;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    top: 40%;
+}
+#play_icon{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: transparent;
+    z-index: 10000;
+    opacity: 0.9;
+    display: none;
+    text-align: center;
+}
+#play_icon .play-icon-request{
+    background-color: transparent !important;
+    cursor: pointer;
+    height: 2em;
+    width: auto;
+    color: white;
+    padding: 1em;
+    line-height: 2em;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    top: 40%;
+}
+</style>
+</style>
+</head>
+<body style="background-color: rgb(38,38,38); height: 100%; width: 100%; overflow: hidden;">	<div id="login_overlay"><span class="login-popup-request"> Please Login To Watch Video </span></div>
+	<div id="video_player">
+	</div>
+	
+</body>
+
+<script type="text/javascript">
+  function convert_hr_mm_ss_to_second(val){
+ 	var sec = 0
+    tt = val.split(":");
+    sec = tt[0]*3600+tt[1]*60+tt[2]*1;
+    return sec;
+ }
+    var player_status = false;
+    var currentURLType="hls";
+    var user_status = ""
+		var to_mute = "false";
+		var auto_playz = "true";
+		var featureszz = ['playpause','forward','rewind','time','progressbar','fullscreen','volume','videotitle','qualityswitch','bigicons','hotkeys','eventcallbacks','advertisement'];
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (/android/i.test(userAgent)) {
+            if ((navigator.userAgent.indexOf("Chrome") != -1) || iOS){
+               //to_mute = "true";
+               auto_playz = "false"
+               featureszz =  ['playpause','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','advertisement'];
+             }
+        }
+
+        if(iOS){
+        	auto_playz = "false";
+        }
+
+
+
+		ww = window.innerWidth-0.1;
+		wh = window.innerHeight-0.1;
+
+		setInterval(function(){
+			ww = window.innerWidth-0.1;
+			wh = window.innerHeight-0.1;
+			$("#video_player").parent().css( "width", ww);
+			$("#video_player").parent().css( "height", wh);	
+		 }, 700);
+
+		$("#video_player").parent().css( "width", ww);
+		$("#video_player").parent().css( "height", wh);
+		var contenturl = location.href;    
+		var res = contenturl.split("contenturl=");
+		var contenturlobtained = res;
+		var video_url = contenturlobtained[1].split("|")[0];
+		var key = contenturlobtained[1].split("key=")[1].split("|")[0]
+		var decrypted = CryptoJS.AES.decrypt({
+		ciphertext: CryptoJS.enc.Base64.parse(video_url)
+		}, CryptoJS.enc.Base64.parse(key),
+		{ iv: CryptoJS.enc.Hex.parse('00000000000000000000000000000000') });
+		video_url  = decrypted.toString(CryptoJS.enc.Utf8);
+		var video_img = contenturlobtained[1].split("video_img=")[1].split("|")[0]
+		var prerole_ad = contenturlobtained[1].split("ad_url=")[1].split("|")[0]
+		var user_status = contenturlobtained[1].split("login_status=")[1].split("|")[0]
+		var catalogid = contenturlobtained[1].split("catalog_id=")[1].split("|")[0]
+		var contentid = contenturlobtained[1].split("content_id=")[1].split("|")[0]
+		var user_played_time = contenturlobtained[1].split("playback_time=")[1].split("|")[0]
+		//var time = convert_hr_mm_ss_to_second(user_played_time)
+	    var time = 0;
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+					{
+						'content_url' : video_url,
+						'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : "http://23.22.199.3/assets/epiconlogo.png",
+						'videotitle' : '',
+					},					
+				  ],
+				 
+		'autoplay': 'true',
+		'seekonload': time,
+		'mute' : to_mute,
+		'poster' : "video_img",
+		'advertisement' : {
+									'cues' : 'true',
+									'adsets' : [
+				              				  
+		                 					   
+												{
+													'adurl' : '',
+													'schedule' : 'postroll' //in seconds
+												}]
+								  },
+						'hideControlsWhenInactive':'true',	
+
+'qualityswitch' : {'label' : 'Auto', 'metric' : 'bitrate'}, // metric can be resolution or bitrate.
+'features' : featureszz
+
+	});	
+
+
+   	function stopPlayer(){
+		hlsPlayer._videoPlayerControls("stop");	
+	}
+	
+	function pausePlayer(){
+		hlsPlayer._videoPlayerControls("pause");	
+	}
+	
+	function playPlayer(){
+		hlsPlayer._videoPlayerControls("play");	
+	}
+	
+	function seekPlayer(val){
+		hlsPlayer._videoPlayerControls("seek",val);	
+	}
+	
+	function getcurrentTime(){
+		return hlsPlayer._getCurrentTime();
+	}
+	
+	function getTotalDuration(){  
+		return hlsPlayer._getTotalDuration();
+	}
+
+var current_url = window.location.protocol + "//" + window.location.host;
+var url = "";
+	if (current_url == "http://localhost:3000"){
+		url = "http://localhost:3000";
+	}
+	else if (current_url == "http://23.22.199.3"){
+		url = "http://23.22.199.3";
+	}
+
+function createEventCallBacks(){
+
+	hlsPlayer.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+
+		player_status = true;
+		top.postMessage({ga_event: 'playstart'}, url);
+	};
+
+	hlsPlayer.eventcallbacks.onPause = function(presentTime,duration,mediaId){
+		player_status = false;
+		top.postMessage({ga_event: 'paused'}, url);
+	};
+
+	hlsPlayer.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+		player_status = true;
+		top.postMessage({ga_event: 'resume'}, url);
+	};
+
+	hlsPlayer.eventcallbacks.onComplete = function(presentTime,duration,mediaId){
+		player_status = false;
+		sendPlaybackTime(0);
+		top.postMessage({ga_event: 'playComplete'}, url);
+	};		
+
+	hlsPlayer.eventcallbacks.onSeeked = function(presentTime,duration,mediaId){
+		player_status = true;
+		top.postMessage({ga_event: 'onseeked'}, url);
+	};
+}
+
+
+
+setInterval(function(){ 
+
+	if(getcurrentTime() > 120){
+		if(user_status ==  "false"){
+			pausePlayer();
+		$("#login_overlay").show();
+		}      
+	}
+ }, 2000);
+  
+	function convert_seconds_hh_mm_ss(sec){
+		var hours = Math.floor(sec / 3600);
+		var min = Math.floor((sec - (hours*3600)) / 60);
+		var seconds = Math.floor(sec % 60);
+		return hours +":"+ min + ":"+ seconds
+	}
+
+  
+
+	function sendPlaybackTime(re_time){
+		var player_time = getcurrentTime();
+		time = convert_seconds_hh_mm_ss(player_time);
+		if (re_time == 0){
+			time = "00:00:00"	
+		}
+		else{
+		var postData = "catalog_id=" + catalogid + "&content_id="+contentid+"&time="+time;
+		$.ajax({
+			type: "POST",
+			url: "/users/player_persistant",
+			data: postData,
+			success: function (e){
+			}
+		});
+	  }
+	}
+
+
+
+setInterval(function(argument){
+		if(user_status == "true" && player_status == true){
+			console.log("condition is true")
+			var replay_time = 1;
+			//sendPlaybackTime(replay_time);
+		}
+	},10000)
+
+$(".login-popup-request").click(function(){
+	top.postMessage({ga_event: 'signuppopup'}, url);
+});
+
+$(document).ready(function() {
+  $(window).keypress(function (e){
+  if (e.keyCode === 0 || e.keyCode === 32) {
+   alert(12);
+    e.preventDefault();
+    console.log('Space pressed')
+   }
+ })
+})
+
+
+</script>
+</html>
+<!--  -->

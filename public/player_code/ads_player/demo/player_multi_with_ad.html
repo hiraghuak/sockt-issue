@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5  HLS Player</title>
+<link rel="stylesheet" type="text/css" href="../skins/sphls.css">
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="../plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+	margin: auto;
+}
+#video_player1{
+	height: 300px;
+	width: 400px;
+	background-color: black;
+	margin: 0 auto;
+}
+#video_player2{
+	height: 300px;
+	width: 400px;
+	background-color: black;
+	margin: 0 auto;	
+}
+#video_player3{
+	height: 300px;
+	width: 400px;
+	background-color: black;
+	margin: 0 auto;
+}
+.articlez{
+	font-size: xx-large;
+	padding: 0 5%;
+}
+</style>
+</head>
+<body>
+
+	<br>
+		<div id="video_player1">
+		</div>
+	<br>
+
+		<div id="video_player2">
+		</div>
+	<br>
+	
+		<div id="video_player3">
+		</div>
+	<br>
+
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+var playerObject1, playerObject2, playerObject3, playerObject4, playerObject5, playerObject6;
+var featuresConfig = {};
+featuresConfig.autoPlay = 'false';
+featuresConfig.mute = 'true';
+
+var mobileFeaturesArray = ['playpause','progressbar','fullscreen','time','eventcallbacks'];
+var desktopFeaturesArray = ['playpause','progressbar','fullscreen','volume','time','qualityswitch','bigicons','eventcallbacks','advertisement','ExternalControls'];
+
+var arrayOfAllPlayerRef = [];
+
+	playerObject1 = new saranyuplayer(currentURLType,'#video_player1',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+					{
+	     				'content_url' : 'http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8',
+            			'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '../demo/images/elephants-dream.jpg',
+						'videotitle' : 'Elephants Dream',						
+					},
+				  ],
+		'autoplay':featuresConfig.autoPlay,
+		'mute' : featuresConfig.mute,
+		'poster' : '../demo/saranyuimage.png',
+		'hideControlsWhenInactive':'true',
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : desktopFeaturesArray,
+		'advertisement' : {
+			'cues' : 'true',
+			'vmap' : 'true',
+			'adsets' : [{
+				'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=',
+				//'adurl' : 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=',
+				'schedule' : 'preroll'
+				},]
+		},		
+	});
+
+	arrayOfAllPlayerRef.push(playerObject1);
+
+	playerObject1.createEventCallBacks = function(){
+    	console.log("function called");
+        playerObject1.referenceObj.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+        	pauseAllPlayerOtherThanThis(playerObject1);
+        	console.log("event1 occured play");
+        };
+        playerObject1.referenceObj.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+			pauseAllPlayerOtherThanThis(playerObject1);
+			console.log("event1 occured resume");
+        };
+    }
+
+
+	playerObject2 = new saranyuplayer(currentURLType,'#video_player2',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+					{
+	     				'content_url' : 'https://wowzaec2demo.streamlock.net/vod-multitrack/_definst_/smil:ElephantsDream/ElephantsDream.smil/playlist.m3u8',
+            			'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '../demo/images/bigbunny.jpg',
+						'videotitle' : 'Elephants Dream',						
+					},
+				  ],
+		'autoplay':featuresConfig.autoPlay,
+		'mute' : featuresConfig.mute,
+		'poster' : '../demo/saranyuimage.png',
+		'hideControlsWhenInactive':'true',
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : desktopFeaturesArray,
+		'advertisement' : {
+			'cues' : 'true',
+			'vmap' : 'true',
+			'adsets' : [
+				{
+				'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=',
+				//'adurl' : 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=',
+				'schedule' : 'preroll'
+				},
+			]},		
+	});
+
+	arrayOfAllPlayerRef.push(playerObject2);
+	playerObject2.createEventCallBacks = function(){
+    	console.log("function called");
+        playerObject2.referenceObj.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+        	pauseAllPlayerOtherThanThis(playerObject2);
+        	console.log("event2 occured play");
+        };
+        playerObject2.referenceObj.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+        	pauseAllPlayerOtherThanThis(playerObject2);
+			console.log("event2 occured resume");
+        };
+    }
+
+
+	playerObject3 = new saranyuplayer(currentURLType,'#video_player3',{
+	  'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+					{
+	     				'content_url' : 'https://cdn.theoplayer.com/video/star_wars_episode_vii-the_force_awakens_official_comic-con_2015_reel_(2015)/index.m3u8',
+            			'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '../demo/images/starwars2.jpg',
+						'videotitle' : 'Elephants Dream',						
+					},
+				  ],
+		'autoplay':featuresConfig.autoPlay,
+		'mute' : featuresConfig.mute,
+		'poster' : '../demo/saranyuimage.png',
+		'hideControlsWhenInactive':'true',
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : desktopFeaturesArray,
+		'advertisement' : {
+			'cues' : 'true',
+			'vmap' : 'true',
+			'adsets' : [
+				{
+				'adurl': 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=',
+				//'adurl' : 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=',
+				'schedule' : 'preroll'
+				},
+			]},		
+	});
+
+	arrayOfAllPlayerRef.push(playerObject3);
+	playerObject3.createEventCallBacks = function(){
+    	console.log("function called");
+        playerObject3.referenceObj.eventcallbacks.onPlay = function(presentTime,duration,mediaId){
+        	pauseAllPlayerOtherThanThis(playerObject3);
+        	console.log("event3 occured play");
+        };
+        playerObject3.referenceObj.eventcallbacks.onResume = function(presentTime,duration,mediaId){
+			pauseAllPlayerOtherThanThis(playerObject3);
+			console.log("event3 occured resume");
+        };
+
+    }        
+
+    function pauseAllPlayerOtherThanThis(obj){
+    		$.each(arrayOfAllPlayerRef,function(index,value){
+    			if(value === obj){
+    				console.log("hello :P ")
+    			}else{
+    				console.log(value.container);
+    				value.referenceObj.ExternalControls.pause();
+    			}
+    		})
+    }
+
+</script>
+</html>

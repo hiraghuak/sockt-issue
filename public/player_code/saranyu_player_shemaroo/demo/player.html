@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+<link rel="stylesheet" type="text/css" href="../skins/sphls.css">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72765259-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<!--<script src="../external/jquery-1.11.3.min.js"></script> -->
+
+<script src="../external/jquery-3.1.1.min.js"></script>
+
+<script src="../plugin/saranyuplayer.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+}
+#video_player{
+	height: 360px;
+	width: 640px;
+	background-color: black;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+	<div>
+	
+    <div>
+	<!--	<form id="form1">
+		<input type="radio" id= "mp4" value="mp4" name="mtype"  onClick= "loadList(this)" >MP4</input>
+		   
+		<input type="radio" id= "hls" value="hls" name="mtype" checked onClick= "loadList(this)">HLS</input>
+		   
+		</form> -->
+	</div>
+	<div>
+	<br>
+	<br>
+	<label id=bandwidth>User Bandwidth: </label>
+		<br>
+		<br>
+		<!--<label>Enter URL: </label>
+		<input type="text" id="url" width="300">
+		 <button id="add" name="add" onclick="OnAddURL()">Add</button> 
+		<button id="remove" name="add" onclick="deleteRow()">Remove</button>
+		
+		<button id="stop" name="stop" onclick="stopPlayer()">Stop</button>-->
+		
+		<!--<button id="play" name="play" onclick="playUserPlayList()">Play-PlayList</button>
+		<br>
+		<br>
+		
+	
+		<span style="font-size:x-large;">Playlist : <select id="folderselecter"  onchange="getLinks(this)"></select></span>
+		<table id="playlist" name="playlist">
+		</table>-->
+	</div>
+	
+    </div>
+</body>
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+
+var playerObject;
+
+var playlistURL="live.json";
+
+function getPlayList(file, callback) {
+			var rawFile = new XMLHttpRequest();
+			rawFile.overrideMimeType("application/json");
+			rawFile.open("GET", file, true);
+			rawFile.onreadystatechange = function() {
+				if (rawFile.readyState === 4 && rawFile.status == "200") {
+					callback(rawFile.responseText);
+				}
+			}
+			rawFile.send(null);
+			//
+}
+        
+
+getPlayList(playlistURL, function(text){
+										var data = JSON.parse(text);
+										getPlayer(currentURLType,data);
+									});
+	
+
+function getPlayer(currentURLType,playlist){
+//alert(url.toString());
+
+   var contentURL="";
+   if(currentURLType!="" ){
+	contentURL=playlist;
+	var node=document.getElementById("video_player");
+    while (node.hasChildNodes()) {
+		node.removeChild(node.lastChild);
+	}
+	if(currentURLType=="hls"){
+	//contentURL="";
+	}
+
+   }
+  // alert("URL"+contentURL);
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	    'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :playlist ,
+		'autoplay':'true',
+		'mute' : 'false',
+		'poster' : '../demo/saranyuimage.png',
+		'nxplayback' :  [
+							{ 'speed' :'0.25','label' : 'Slowest' , 'default' : 'false' },
+							{ 'speed' :'0.5','label' : 'Slow', 'default' : 'false' },
+							{ 'speed' : '1' ,'label' : 'Normal', 'default' : 'true' },
+							{ 'speed' : '1.25', 'label' : 'Fast','default' : 'false' },
+							{ 'speed' : '1.5' ,'label' : 'Faster', 'default' : 'false' },
+							{ 'speed' : '2' ,'label' : 'Fastest', 'default' : 'false' }
+						],
+		'advertisement' : {
+							'cues' : 'true',
+							'adsets' : [
+							           
+		              				  ]
+						  },
+'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+'features' : ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','eventcallbacks','hotkeys','nxplayback','advertisement','seekbarpreview','multiaudio','subtitles','playlist'],
+    
+	});
+}
+	//getPlayer(currentURLType);
+	$(window).on("orientationchange",function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+				});
+				
+				//$(window).load(function(){
+				$(window).on("load", function (){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+					
+				});
+
+	
+	function stopPlayer(){
+	try{ clearTimeout(changeUrl);
+		}catch(e){
+			  }
+		hlsPlayer._videoPlayerControls("stop");	
+		
+		var btn1 = document.getElementById("add"); btn1.disabled = false;
+		 var btn2 = document.getElementById("remove"); btn2.disabled = false;
+	}
+	
+	function pausePlayer(){
+		hlsPlayer._videoPlayerControls("pause");	
+	}
+	
+	function seekPlayer(val){
+		hlsPlayer._videoPlayerControls("seek",val);	
+	}
+	
+	function getcurrentTime(){
+	  
+	return hlsPlayer._getCurrentTime();
+	
+	}
+	
+	function deleteRow() {
+	
+		//var i = r.parentNode.parentNode.rowIndex;
+		var i ;
+		
+		if(selectedRow==undefined){
+		i=document.getElementById("playlist").rows.length-1;
+		}
+		else{
+		i= selectedRow.parentNode.rowIndex;
+		}
+		
+		//alert(selectedRow.parentNode.rowIndex);
+		document.getElementById("playlist").deleteRow(i);
+		
+		if(document.getElementById("playlist").rows.length == 0) {
+			clearInterval(timer);
+		}
+		
+	}
+var urlList=[];
+var selectedRow;
+	function OnAddURL(ur) {
+		//var url = document.getElementById("url").value;
+		var url=ur;
+		var playlist_table = document.getElementById("playlist");
+		var play = false;
+		var row_cnt = playlist_table.rows.length;
+		
+		if(url==""){
+		return;
+		}
+		
+		// If first item is being added now, play it.
+		if(0 == row_cnt) {
+			play = true;
+		}
+		
+		var row = playlist_table.insertRow(-1);
+		
+		var cell = row.insertCell(-1);
+		cell.innerHTML = url;
+		
+		cell = row.insertCell(-1);
+		urlList.push(cell);
+		
+		cell.innerHTML = '<input type="button" value="Play" rowcnt="'+row_cnt+'"onclick="PlayMov(this)">'
+		
+		//document.getElementById("url").value = "";
+		
+		 var t = document.getElementById('playlist');
+			var rows = t.rows; 
+			for (var i=0; i<rows.length; i++) {
+				rows[i].onclick = function () {
+				
+					var cells = this.cells; //cells collection
+					//alert(cells[0].innerHTML)
+					selectedRow=cells[0];
+					unhighlight();
+					
+					this.origColor=this.style.backgroundColor;
+					this.style.backgroundColor='#BCD4EC';
+					
+				}
+			}
+	}
+	
+	function unhighlight(){
+		 var table = document.getElementById('playlist');
+		 for (var i=0;i < table.rows.length;i++){
+		   var row = table.rows[i];
+		   row.style.backgroundColor="";
+		 
+		 }
+	}
+	var url_rowid = -1;
+	var timer;
+	
+	function GetNextURL() {
+        var table = document.getElementById('playlist');
+        var numrows = table.rows.length;
+		
+		if(numrows == 0) {
+			return null;
+		}
+		
+		url_rowid++;
+		
+		if(url_rowid >= numrows) {
+			url_rowid = url_rowid % numrows;
+		}
+		
+		return table.rows[url_rowid].cells[0].innerHTML;
+    }
+	function OnRemoveURL(){
+		console.log(urlList,url_rowid)
+	}
+	
+	var  changeUrl;
+	
+	function PlayMov(r){
+		var i = r.parentNode.parentNode.rowIndex;
+		var cells = document.getElementById("playlist").rows[i].cells
+			
+		
+		//alert(cells[0].innerHTML)
+		playUserPlayList(cells[0].innerHTML)
+	}
+	function playUserPlayList(url){
+		//hlsPlayer._videoPlayerControls("seek",200);
+		try{ clearTimeout(changeUrl);
+		}catch(e){
+			  }
+		var file={};
+        file.content_url= url;//GetNextURL();	
+		file.videotitle=file.content_url;
+		//alert("currentURLType:"+currentURLType + checkMediaURL(file));
+        if(checkMediaURL(file) == currentURLType && currentURLType=="hls"){
+		 //alert("play in hls player");
+		 hlsPlayer._playcustomPlayList(file);
+		}
+		else if(checkMediaURL(file) == currentURLType && currentURLType=="mp4"){
+			
+			hlsPlayer._playcustomPlayList(file);
+		}
+		else if(checkMediaURL(file) != currentURLType){
+		   //alert("load new player type")
+			getPlayer(checkMediaURL(file),file.content_url);	
+			if(checkMediaURL(file)=="hls"){
+			  
+			}
+			else{
+				
+			}
+        }			
+	}
+	
+	
+		// Let's initialize the primitives
+		var startTime, endTime, fileSize;
+
+		// Set up the AJAX to perform
+		var xhr = new XMLHttpRequest();
+
+		// Rig the call-back... THE important part
+		xhr.onreadystatechange = function () {
+
+		  // we only need to know when the request has completed
+		  if (xhr.readyState === 4 && xhr.status === 200) {
+
+			// Here we stop the timer & register end time
+			endTime = (new Date()).getTime();
+
+			// Also, calculate the file-size which has transferred
+			fileSize = xhr.responseText.length;
+
+			// Calculate the connection-speed
+			var speed = (fileSize * 8) / ((endTime - startTime)/1000) / 1024;
+
+			// Report the result, or have fries with it...
+			//alert(speed + " Kbps\n");
+			//document.getElementById("bandwidth").label ="User Bandwidth "+speed;
+			document.getElementById('bandwidth').innerHTML="User Bandwidth "+(speed/1024).toFixed(2)+"Mbps";
+		  }
+		}
+
+		// Snap back; here's where we start the timer
+		startTime = (new Date()).getTime();
+
+		// All set, let's hit it!
+		xhr.open("GET", "http://198.50.108.234/mse_testURL/demo/images/saranyu.jpg", true);
+		xhr.send();	
+		var bandwidthInterval = setInterval(checkUserBandwidth, 30000);
+		function checkUserBandwidth(){
+		  	//alert("check bandwidth");
+			startTime = (new Date()).getTime();
+			document.getElementById('bandwidth').innerHTML="Checking Bandwidth";
+			xhr.open("GET", "http://198.50.108.234/mse_testURL/demo/images/saranyu.jpg", true);
+			xhr.send();	
+			
+		}
+		
+		var XMLHttpRequestObject = false; 
+		var hlsListAry=[];
+		var mp4ListAry=[];
+	    var foldernameAry=[];
+		var aryline=[];
+		var folderList=[];
+		var finalURLAry=[];
+		function loadtextURL(url,type){
+	          finalURLAry=[];
+			  if (window.XMLHttpRequest) {
+				XMLHttpRequestObject = new XMLHttpRequest();
+			  } else if (window.ActiveXObject) {
+				XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			   XMLHttpRequestObject.open("GET", url); 
+
+			  XMLHttpRequestObject.onreadystatechange = function() 
+			  { 
+				if (XMLHttpRequestObject.readyState == 4 && 
+				  XMLHttpRequestObject.status == 200) { 
+					//obj.innerHTML = XMLHttpRequestObject.responseText; 
+					
+					aryline=(XMLHttpRequestObject.responseText).split("\n");
+					for( var k=0;k<aryline.length;k++){
+						var tempary=aryline[k].split(",");
+						finalURLAry.push(tempary[1]);
+						folderList.push(tempary[0]);
+					}
+					//console.log("ary "+type+"=="+folderList);
+					var arrconcat = unique(folderList.slice());
+					
+					var select = document.getElementById('folderselecter');
+					for (var l = 0; l<=arrconcat.length; l++){
+							var opt = document.createElement('option');
+							opt.value = arrconcat[l];
+							opt.innerHTML = arrconcat[l];
+							select.appendChild(opt);
+					}
+					
+					if(type=="mp4"){
+						//mp4ListAry =ary;
+						for ( var i = 0; i < finalURLAry.length; i++) {
+						 //OnAddURL(finalURLAry[i]);
+						}
+					//	var sl = document.getElementById()
+					select.options[1].selected = true;
+					getLinks(select.options[1]);
+					//alert($("#folderselecter :nth-child(2)").html());
+						}
+					else{
+					 // hlsListAry=ary;
+						 for ( var i = 0; i < finalURLAry.length; i++) {
+							OnAddURL(finalURLAry[i]);
+						}
+					}
+				}
+				 
+			  } 
+
+			  XMLHttpRequestObject.send(null); 
+			 
+		}
+		
+		function unique(origArr) {
+			var newArr = [],
+				origLen = origArr.length,
+				found, x, y;
+
+			for (x = 0; x < origLen; x++) {
+				found = undefined;
+				for (y = 0; y < newArr.length; y++) {
+					if (origArr[x] === newArr[y]) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					newArr.push(origArr[x]);
+				}
+			}
+			return newArr;
+		}
+		
+		function getLinks(obj){
+		var Table = document.getElementById("playlist");
+			Table.innerHTML = "";
+			//alert("hello");
+			folderList.forEach(function(link,index){
+			console.log(obj.value,link,index)
+			if(link.indexOf(obj.value)!==-1){
+				OnAddURL(finalURLAry[index]);
+			}
+			
+			})
+		
+		}
+		function loadList(filetype){
+		  //  alert("radio called"+filetype.value+"-"+mp4ListAry.length);
+			var Table = document.getElementById("playlist");
+			Table.innerHTML = "";
+			if(filetype.value=="mp4"){
+			// var mp4ListAry1=loadtextURL("http://198.50.108.234/mse_etv/mp4urls.txt","mp4");
+			  var mp4ListAry1=loadtextURL("http://103.7.130.135/etv/mp4/playlist.txt","mp4");
+				
+			}
+			else if(filetype.value=="hls"){
+			//var hlsListArys = loadtextURL("http://198.50.108.234/mse_etv/hlsurls.txt","hls");
+			var hlsListArys = loadtextURL("http://103.7.130.135/etv/hls/playlist.txt","hls");
+			}
+		}
+		
+		
+	    
+		
+	   
+		
+</script>
+</html>

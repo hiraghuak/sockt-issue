@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Saranyu HTML5 HLS Player</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72765259-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="../external/jquery-1.11.3.min.js"></script>
+
+<script src="../plugin/sp.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<style type="text/css">
+
+body{
+	background-color: silver;
+}
+#video_player{
+	height: 300px;
+	width: 300px;
+	background-color: black;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+	<div id="video_player">
+	</div>
+	<div>
+
+    <div>
+	<!--	<form id="form1">
+		<input type="radio" id= "mp4" value="mp4" name="mtype"  onClick= "loadList(this)" >MP4</input>
+
+		<input type="radio" id= "hls" value="hls" name="mtype" checked onClick= "loadList(this)">HLS</input>
+
+		</form> -->
+	</div>
+	<div>
+	<br>
+	<br>
+	<label id=bandwidth>User Bandwidth: </label>
+		<br>
+		<br>
+		<!--<label>Enter URL: </label>
+		<input type="text" id="url" width="300">
+		 <button id="add" name="add" onclick="OnAddURL()">Add</button>
+		<button id="remove" name="add" onclick="deleteRow()">Remove</button>
+
+		<button id="stop" name="stop" onclick="stopPlayer()">Stop</button>-->
+
+		<!--<button id="play" name="play" onclick="playUserPlayList()">Play-PlayList</button>
+		<br>
+		<br>
+
+
+		<span style="font-size:x-large;">Playlist : <select id="folderselecter"  onchange="getLinks(this)"></select></span>
+		<table id="playlist" name="playlist">
+		</table>-->
+	</div>
+
+    </div>
+</body>
+<script type="text/javascript">
+var nua = navigator.userAgent;
+var is_android_native_browser = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+var is_iPhone = (nua.match(/iphone/i) !== null);
+//Player Congfiguration
+var currentURLType="hls";
+
+var playerObject;
+
+function getPlayer(currentURLType,url){
+   var contentURL="";
+   if(currentURLType!="" ){
+	contentURL=url;
+	var node=document.getElementById("video_player");
+    while (node.hasChildNodes()) {
+		node.removeChild(node.lastChild);
+	}
+	if(currentURLType=="hls"){
+	//contentURL="";
+	}
+
+   }
+  // alert("URL"+contentURL);
+
+
+	playerObject = new saranyuplayer(currentURLType,'#video_player',{
+	    'licence':'6BdgYyHxsYkXNCViMFM1+RZy9RNs2YO9Xe7ATbcHakqLzZzSAqxou+Iz51R1%0AbjMo655ZwM58\/oaZcSQ5fHkgqeqHW1C+pLEUFFN+qlI3ZgM=%0A',
+		'type' : 'video',
+		'content' : 'vod',
+		'file' :  [
+		            {
+            			'content_url' : 'https://wowzaec2demo.streamlock.net/vod-multitrack/_definst_/smil:ElephantsDream/ElephantsDream.smil/playlist.m3u8',
+						'label' : 'Auto',
+						'mediaid' : '123',
+						'poster' : '',
+						'videotitle' : 'Elephants Dream',
+						'thumbnails' : './thumbnails/elephandream_thumbnails.vtt',
+           			    'subtitles' : [
+		                            	{
+											 'lang' : 'EN',
+		                            		'file' : '../demo/Elephants_Dream_eng.srt'
+									    }
+		                          		,{
+										 	'lang' : 'ES',
+		                            		'file' : '../demo/Elephants_Dream_spanish.srt'
+									    }
+									    ,{
+									    	'lang' : 'HI',
+									    	'file' : '../demo/amarprem.srt'
+									    }
+								       ],
+					},	       
+				],				  
+		'autoplay':'false',
+		'mute' : 'false',
+		'seekonload': '0',
+		'poster' : '../demo/saranyuimage.png',
+		'nxplayback' :  [
+							{ 'speed' :'0.25','label' : 'Slowest' , 'default' : 'false' },
+							{ 'speed' :'0.5','label' : 'Slow', 'default' : 'false' },
+							{ 'speed' : '1' ,'label' : 'Normal', 'default' : 'true' },
+							{ 'speed' : '1.25', 'label' : 'Fast','default' : 'false' },
+							{ 'speed' : '1.5' ,'label' : 'Faster', 'default' : 'false' },
+							{ 'speed' : '2' ,'label' : 'Fastest', 'default' : 'false' }
+						],
+		'advertisement' : {
+							'cues' : 'true',
+							'adsets' : [
+		              				   ]
+						  },
+		'hideControlsWhenInactive':'true',						  
+		'qualityswitch' : {'label' : 'Auto', 'metric' : 'resolution'}, // metric can be resolution or bitrate.
+		'features' : ['playpause','volume','time','progressbar','fullscreen','videotitle','qualityswitch','bigicons','eventcallbacks','hotkeys','advertisement','seekbarpreview','multiaudio','subtitles'],
+	});
+}
+	getPlayer(currentURLType,"https://wowzaec2demo.streamlock.net/vod-multitrack/_definst_/smil:ElephantsDream/ElephantsDream.smil/playlist.m3u8");
+	$(window).on("orientationchange",function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+				});
+
+				$(window).load(function(){
+				if(is_android_native_browser){
+						try{
+							$("#video_player").width(window.innerWidth - 0.1);
+							$("#video_player").height(window.innerHeight - 0.1);
+						}catch(e){
+						}
+					}else if(is_iPhone){
+						$("#video_player").width("100%");
+					$("#video_player").height("60%");
+					}
+					else{
+						try{
+						//alert("in Windows");
+							if (window.matchMedia("(orientation: portrait)").matches) {
+							// you're in portrait mode
+							//alert("in Windows potrait");
+								$("#video_player").width(screen.availWidth - 0.1);
+								$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+							else if (window.matchMedia("(orientation: landscape)").matches) {
+							// you're in landscape mode
+							//alert("in Windows lanscape");
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}else{
+								// if browser is old and not capable detect orientation
+								//$("#video_player").width(screen.availWidth - 0.1);
+								//$("#video_player").height((screen.availHeight - 0.1)/2);
+							}
+
+						}catch(e){
+						}
+					}
+
+				});
+
+</script>
+</html>
